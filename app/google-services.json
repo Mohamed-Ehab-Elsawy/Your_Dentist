@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "474536080159",
+    "project_id": "your-dentist--cs21",
+    "storage_bucket": "your-dentist--cs21.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474536080159:android:11975ee0928dbcdcd9362a",
+        "android_client_info": {
+          "package_name": "com.nca.yourdentist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBFneoaqFVHMd19SMpOfJOO6XsIMPZhJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:474536080159:android:bcba3f5e905fa6d3d9362a",
+        "android_client_info": {
+          "package_name": "com.nca.yourdentistadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBFneoaqFVHMd19SMpOfJOO6XsIMPZhJM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

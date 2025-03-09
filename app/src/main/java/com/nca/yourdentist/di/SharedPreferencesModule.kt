@@ -1,0 +1,30 @@
+package com.nca.yourdentist.di
+
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
+import com.nca.yourdentist.utils.Constant
+import org.koin.android.ext.koin.androidContext
+import org.koin.dsl.module
+
+val sharedPreferencesModule = module {
+    single<SharedPreferences> {
+        val context: Context = androidContext()
+        val masterKey = MasterKey.Builder(context)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+
+        EncryptedSharedPreferences.create(
+            context,
+            Constant.SHARED_PREFERENCE,
+            masterKey,
+            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+        )
+    }
+
+    // ✅ Register PreferencesHelper
+    single { PreferencesHelper(get()) }
+}

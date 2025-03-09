@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">طبيب أسنانك</string>
+    <string name="app_logo">أيقونة البرنامج</string>
+
+    <string name="gender">الجنس</string>
+    <string name="birthdate">يوم ميلادك</string>
+    <string name="the_supplied_auth_credential_is_incorrect">" البريد الإلكتروني خطأ"</string>
+    <string name="the_email_address_is_badly_formatted">" البريد الإلكتروني خطأ"</string>
+    <string name="settings">الإعدادات</string>
+    <string name="profile">الحساب</string>
+    <string name="chats">المحادثات</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="full_name">الاسم بالكامل</string>
+    <string name="confirm_your_password">تأكيد كلمة السر</string>
+    <string name="error_wrong_email_or_password">خطأ: البريد الإلكتروني او كلمة السر خطأ</string>
+    <string name="error_email_is_badly_formatted">خطأ: البريد الإلكتروني خطأ</string>
+    <string name="create_account">إنشئ حساب</string>
+    <string name="password">كلمة المرور</string>
+    <string name="forget_password">نسيت كلمة المرور</string>
+    <string name="create_new_account">إنشئ حساب جديد</string>
+    <string name="splash_background">خلفية</string>
+    <string name="e_mail">البريد الإلكتروني</string>
+    <string name="sign_up">تسجيل</string>
+    <string name="login">تسجيل دخول</string>
+    <string name="patient_login">تسجيل دخول المريض</string>
+    <string name="home">الرئيسية</string>
+    <string name="enter_valid_email_address">أدخل بريد إلكتروني صحيح</string>
+    <string name="enter_valid_password_address">أدخل كلمة سر مناسبة</string>
+    <string name="password_must_be_8_or_more_characters">كلمة المرور يجب ان تكون من 8 ارقام او اكثر</string>
+    <string name="login_successful">"تم تسجيل دخولك بنجاح "</string>
+    <string name="log_in_with_google">تسجيل الدخول بحساب جوجل</string>
+    <string name="take_photo">تصوير</string>
+    <string name="open_model">افتح الكاميرا</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="take_a_pic_hint">قم بتصوير أشعة البانورما</string>
+    <string name="contact_us">تواصل معانا</string>
+    <string name="change_language">تغير اللغة</string>
+    <string name="male">ذكر</string>
+    <string name="female">أنثى</string>
+    <string name="age">Age</string>
+    <string name="not_specified">غير محدد</string>
+    <string name="notification">إشعارات</string>
+    <string name="about_us">من نحن</string>
+    <string name="update_profile">تحديث الحساب</string>
+    <string name="edit_profile">تعديل بيانات الحساب</string>
+    <string name="notification_settings">إعددات الإشعارات</string>
+    <string name="error_while_complete_data">حدث خطأ، حاول مره اخري لاحقا</string>
+    <string name="data_completed_successfully">تم تحديث البيانات بنجاح</string>
+    <string name="not_specified_">غير محدد</string>
+    <string name="turn_on_notification">تفعيل الإشعارات</string>
+    <string name="dentist_login">تسجيل دخول الطبيب</string>
+    <string name="next">التالي</string>
+    <string name="previous">السابق</string>
+
+    <string name="patient">مريض</string>
+    <string name="dentist">طبيب اسنان</string>
+    <string name="login_as_patient">تسجيل الدخول كمريض</string>
+    <string name="login_as_dentist">تسجيل الدخول كطبيب أسنان</string>
+
+    <string name="about_us_description">
+        <![CDATA[
+            <p>نحن مجموعة من خمسة طلاب متحمسين في قسم <b>علوم الحاسوب</b> في <b>أكاديمية القاهرة الجديدة</b>، تحت إشراف <b>الأستاذة شيرين أحمد رضا</b>.</p>
+            <ul>
+                <li><b>محمد إيهاب</b></li>
+                <li><b>أحمد عبد الموجود</b></li>
+                <li><b>إسراء محمد</b></li>
+                <li><b>محمد عبد القادر</b></li>
+                <li><b>مريم أسامة</b></li>
+            </ul>
+            <p>مشروع تخرجنا يركز على تطوير تطبيق أندرويد مبتكر يساعد المرضى على اتخاذ قرارات مستنيرة بشأن صحة أسنانهم.</p>
+            <p>يستخدم التطبيق تقنية <b>الذكاء الاصطناعي</b> لاكتشاف تسوس الأسنان من خلال صور الأشعة السينية. بالإضافة إلى ذلك، يتيح للمرضى استشارة أكثر من طبيب أسنان لضمان الحصول على آراء مهنية متنوعة بناءً على نتائج نموذج الذكاء الاصطناعي.</p>
+            <p>هدفنا هو تبسيط عملية التشخيص والاستشارة، وتمكين المرضى من الحصول على معلومات دقيقة وفي الوقت المناسب لمعالجة مشاكل أسنانهم بفعالية.</p>
+        ]]>
+    </string>
+
+    <string name="loading">يتم التحميل …</string>
+    <string name="previous_appointment">المواعيد السابقة</string>
+    <string name="slide_menu">القائمة الجانبية</string>
+    <string name="complete_profile">إكمال الملف</string>
+
+    <string name="questionnaire">إستبيان</string>
+    <string name="answer_the_following_questions">أجب الأسئلة التالية:</string>
+    <string name="yes">نعــم</string>
+    <string name="no">لا</string>
+    <string name="question_1">هل تعاني من أي ألم عند شرب المشروبات الباردة أو تناول الحلويات؟</string>
+    <string name="question_2">هل يعلق الطعام بين أسنانك أو تعاني من نزيف في اللثة؟</string>
+    <string name="question_3">هل تشعر بأي ألم عند الضغط أو العض على أحد أسنانك؟</string>
+    <string name="question_4">هل لديك أي تورم في الوجه متعلق بأسنانك؟</string>
+
+    <string name="no_internet_connection">لا يوجد إتصال بالانترنت</string>
+    <string name="try_again">حاول مجددا</string>
+
+    <string name="schedules">المواعيد</string>
+    <string name="book_an_appointment">حجز معاد</string>
+    <string name="choose_dentist">اختار طبيب أسنان</string>
+    <string name="dentist_img">صورة الدكتور</string>
+    <string name="book_now">أحجز الان</string>
+    <string name="visit_hour">ساعة الزيارة</string>
+    <string name="reset_password">إعادة تعيين كلمة السر</string>
+    <string name="reset_password_link_sent_to_your_email">تم إرسال إيميل لإعادة تعيين كلمة المرور بنجاح</string>
+
+    <string name="intro_title_1">كشف تسوس الأسنان باستخدام الذكاء الاصطناعي</string>
+    <string name="intro_description_1">يقوم نموذج الذكاء الاصطناعي المتقدم لدينا بتحليل صور الأشعة السينية البانورامية لاكتشاف تسوس الأسنان بدقة عالية. احصل على رؤية فورية لحالة أسنانك.</string>
+    <string name="intro_title_2">فهم حالة أسنانك</string>
+    <string name="intro_description_2">أجب عن أربعة أسئلة بسيطة حول صحة أسنانك. سيقوم نظامنا المدعوم بالذكاء الاصطناعي بتقييم الأعراض وتقديم رؤى مخصصة لك</string>
+    <string name="intro_title_3">تشخيص دقيق بالذكاء الاصطناعي</string>
+    <string name="intro_description_3">باستخدام التعلم العميق، يحلل الذكاء الاصطناعي لدينا صور الأشعة السينية لأسنانك وإجاباتك للكشف عن التسوس والمشاكل الأخرى. احصل على تشخيص واضح ودقيق.</string>
+    <string name="intro_title_4">احجز موعدك مع طبيب الأسنان</string>
+    <string name="intro_description_4">حدد موعدًا بسهولة مع طبيب أسنان مؤهل بناءً على تشخيص الذكاء الاصطناعي الخاص بك. اتخذ الخطوة التالية نحو صحة فموية أفضل</string>
+    <string name="skip">تخطي</string>
+
+    <string name="intro_img">صور المقدمة</string>
+    <string name="choose_your_current_city_and_area">أختار مدينتك و منطقتك الحالية</string>
+    <string name="select_city">اختار المدينة</string>
+    <string name="select_area">اختار المنطقة</string>
+    <string name="examine_now">افحص الان</string>
+    <string name="radiograph">أشعة</string>
+    <string name="okay">تم</string>
+    <string name="cancel">إلغاء</string>
+    <string name="open_gallery">فتح المعرض</string>
+    <string name="_4">/ 4</string>
+    <string name="login_failed">Login failed</string>
+</resources>
