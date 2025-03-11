@@ -2,8 +2,8 @@ package com.nca.yourdentist.data.shared_preferences
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.google.gson.Gson
 import androidx.core.content.edit
+import com.google.gson.Gson
 import com.nca.yourdentist.data.model.Dentist
 import com.nca.yourdentist.data.model.Patient
 
@@ -13,6 +13,7 @@ class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
         const val PATIENT = "patient"
         const val DENTIST = "dentist"
         const val SHOW_INTRO = "show_intro"
+        const val CURRENT_LANGUAGE = "current_language"
     }
 
     private val gson = Gson()

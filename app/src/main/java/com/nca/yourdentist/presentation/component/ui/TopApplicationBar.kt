@@ -1,20 +1,28 @@
-package com.nca.yourdentist.presentation.component
+package com.nca.yourdentist.presentation.component.ui
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.surfaceContainerLight
 
 @Composable
-fun CustomAppBar(
+fun TopApplicationBar(
     title: String,
     iconRes: Int,
     iconTint: Color,
@@ -22,35 +30,35 @@ fun CustomAppBar(
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
-        color = surfaceContainerLight // Ensure background color consistency
+        color = surfaceContainerLight
     ) {
         Box(
             modifier = Modifier
-                .fillMaxWidth() // Ensure Box expands to full width
+                .fillMaxWidth()
                 .background(surfaceContainerLight)
-                .padding(vertical = 16.dp)
+                .padding(vertical = 18.dp)
         ) {
-            // Title (Centered)
+
             Text(
                 text = title,
                 style = MaterialTheme.typography.labelLarge,
+                fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
                 color = primaryLight,
                 modifier = Modifier.align(Alignment.Center)
             )
 
-            // Generic Icon Button (End)
             IconButton(
                 onClick = onIconClick,
                 modifier = Modifier
-                    .align(Alignment.CenterEnd) // Aligns to end
-                    .padding(end = 16.dp) // Ensure spacing from the edge
+                    .align(Alignment.CenterStart)
+                    .padding(start = 16.dp)
             ) {
                 Icon(
                     painter = painterResource(id = iconRes),
                     contentDescription = null,
                     tint = iconTint,
-                    modifier = Modifier.size(36.dp)
+                    modifier = Modifier.size(32.dp)
                 )
             }
         }

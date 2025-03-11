@@ -2,7 +2,6 @@ package com.nca.yourdentist.data.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.util.Date
 
 @Parcelize
 data class Patient(
@@ -11,7 +10,7 @@ data class Patient(
     var email: String? = null,
     var gender: String? = null,
     var phoneNumber: String? = null,
-    var birthDate: Date? = null,
+    var birthDate: String? = null,
     val appointments: List<String>? = null,
     val type: String = "patient"
 ) : Parcelable

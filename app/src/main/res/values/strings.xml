@@ -116,5 +116,7 @@
     <string name="open_gallery">openGallery</string>
     <string name="_4">/ 4</string>
     <string name="login_failed">Login failed</string>
+    <string name="password_reset_email_sent">Password reset email sent</string>
+    <string name="icon">icon</string>
 
 </resources>

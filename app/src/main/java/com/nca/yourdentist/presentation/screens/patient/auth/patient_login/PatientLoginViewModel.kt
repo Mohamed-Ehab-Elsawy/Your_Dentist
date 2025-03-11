@@ -10,6 +10,7 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
 import com.nca.yourdentist.data.model.requests.AuthRequest
+import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
 import com.nca.yourdentist.domain.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.domain.usecase.auth.SignInWithGoogleUseCase
 import com.nca.yourdentist.utils.Constant
@@ -22,8 +23,9 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class PatientLoginViewModel(
-    private val useCase: SignInWithEmailUseCase,
-    private val googleSignInUseCase: SignInWithGoogleUseCase
+    private val signInWithEmailUseCase: SignInWithEmailUseCase,
+    private val googleSignInUseCase: SignInWithGoogleUseCase,
+    private val preferencesHelper: PreferencesHelper
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Idle)
@@ -39,6 +41,7 @@ class PatientLoginViewModel(
     var emailError = mutableStateOf<String?>(null)
         private set
     var passwordError = mutableStateOf<String?>(null)
+        private set
 
     fun login() {
         if (!validateInputs()) return
@@ -47,9 +50,10 @@ class PatientLoginViewModel(
             _uiState.value = UiState.Loading
             try {
                 val request = AuthRequest(email.value, password.value)
-                val result = useCase.invoke(request, isDentist = false)
+                val result = signInWithEmailUseCase.invoke(request, isDentist = false)
                 result.onSuccess { user ->
                     if (user != null && PatientProvider.patient?.type == Constant.PATIENT) {
+                        preferencesHelper.savePatient(PatientProvider.patient!!)
                         _uiState.value = UiState.Success(user)
                     } else {
                         _snackBarMessage.emit("User not found")

@@ -1,9 +1,11 @@
 package com.nca.yourdentist.presentation.screens.common.auth.select_type
 
-import androidx.compose.material3.Text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -15,13 +17,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.nca.yourdentist.R
 import com.nca.yourdentist.navigation.Screen
-import com.nca.yourdentist.presentation.component.ui.theme.AppTheme
 
 @Composable
 fun SelectUserTypeScreen(navController: NavController) {
@@ -72,6 +71,7 @@ fun UserTypeCard(title: String, imageRes: Int, onClick: () -> Unit, modifier: Mo
             Text(
                 text = title,
                 style = MaterialTheme.typography.displayMedium,
+                fontStyle = MaterialTheme.typography.displayLarge.fontStyle,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier
                     .align(Alignment.Center)
