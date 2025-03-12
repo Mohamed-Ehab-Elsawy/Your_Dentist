@@ -15,9 +15,12 @@ import com.nca.yourdentist.presentation.screens.patient.auth.complete_profile.Co
 import com.nca.yourdentist.presentation.screens.patient.auth.patient_login.PatientLoginScreen
 import com.nca.yourdentist.presentation.screens.patient.auth.patient_signup.PatientSignupScreen
 import com.nca.yourdentist.presentation.screens.patient.home.PatientHomeScreen
+import com.nca.yourdentist.presentation.screens.patient.questionnaire.QuestionnaireScreen
+import com.nca.yourdentist.presentation.screens.patient.results.PatientResultsScreen
 import com.nca.yourdentist.presentation.screens.patient.settings.PatientSettingsScreen
 import com.nca.yourdentist.presentation.screens.patient.settings.about_us.PatientAboutUsSettings
 import com.nca.yourdentist.presentation.screens.patient.settings.notification_settings.PatientNotificationSettings
+import com.nca.yourdentist.presentation.screens.patient.upload_image.UploadRadiographScreen
 
 
 sealed class Screen(val route: String) {
@@ -32,6 +35,9 @@ sealed class Screen(val route: String) {
     data object PatientSignup : Screen("patient_signup_screen")
     data object CompletePatientData : Screen("patient_complete_data_screen")
     data object PatientHome : Screen("patient_home_screen")
+    data object PatientUploadImage : Screen("patient_upload_image")
+    data object PatientQuestionnaire : Screen("patient_questionnaire")
+    data object PatientResults : Screen("patient_results")
     data object PatientSettings : Screen("patient_settings")
     data object PatientNotificationSettings : Screen("patient_notification_settings")
     data object PatientAboutUsSettings : Screen("patient_about_us_settings")
@@ -57,6 +63,9 @@ fun AppNavGraph() {
         composable(Screen.PatientSignup.route) { PatientSignupScreen(navigator) }
         composable(Screen.CompletePatientData.route) { CompleteProfileScreen(navigator) }
         composable(Screen.PatientHome.route) { PatientHomeScreen(navigator) }
+        composable(Screen.PatientUploadImage.route) { UploadRadiographScreen(navigator) }
+        composable(Screen.PatientQuestionnaire.route) { QuestionnaireScreen(navigator) }
+        composable(Screen.PatientResults.route) { PatientResultsScreen(navigator) }
         composable(Screen.PatientSettings.route) { PatientSettingsScreen(navigator) }
         composable(Screen.PatientNotificationSettings.route) { PatientNotificationSettings(navigator) }
         composable(Screen.PatientAboutUsSettings.route) { PatientAboutUsSettings(navigator) }

@@ -118,5 +118,8 @@
     <string name="login_failed">Login failed</string>
     <string name="password_reset_email_sent">Password reset email sent</string>
     <string name="icon">icon</string>
+    <string name="progress_animation" translatable="false">Progress Animation</string>
+    <string name="page_number_animation" translatable="false">Page Number Animation</string>
+    <string name="submit">Submit</string>
 
 </resources>

@@ -2,6 +2,6 @@ package com.nca.yourdentist.data.model
 
 data class ItemQuestion(
     val title: String,
-    val answer: String? = null,
+    var answer: String = "",
     val yesOrNoQuestion: Boolean = true
 )

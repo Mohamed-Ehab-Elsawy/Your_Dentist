@@ -121,4 +121,7 @@
     <string name="open_gallery">فتح المعرض</string>
     <string name="_4">/ 4</string>
     <string name="login_failed">Login failed</string>
+    <string name="password_reset_email_sent">تم ارسال إيميل لتغير كلمة المرور</string>
+    <string name="icon">إيقونة</string>
+    <string name="submit">تقديم</string>
 </resources>

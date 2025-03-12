@@ -24,8 +24,8 @@ import com.nca.yourdentist.presentation.component.ui.theme.surfaceContainerLight
 @Composable
 fun TopApplicationBar(
     title: String,
-    iconRes: Int,
-    iconTint: Color,
+    iconRes: Int? = null,
+    iconTint: Color? = null,
     onIconClick: () -> Unit
 ) {
     Surface(
@@ -47,20 +47,20 @@ fun TopApplicationBar(
                 color = primaryLight,
                 modifier = Modifier.align(Alignment.Center)
             )
-
-            IconButton(
-                onClick = onIconClick,
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(start = 16.dp)
-            ) {
-                Icon(
-                    painter = painterResource(id = iconRes),
-                    contentDescription = null,
-                    tint = iconTint,
-                    modifier = Modifier.size(32.dp)
-                )
-            }
+            if (iconRes != null && iconTint != null)
+                IconButton(
+                    onClick = onIconClick,
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
+                        .padding(start = 16.dp)
+                ) {
+                    Icon(
+                        painter = painterResource(id = iconRes),
+                        contentDescription = null,
+                        tint = iconTint,
+                        modifier = Modifier.size(32.dp)
+                    )
+                }
         }
     }
 }
