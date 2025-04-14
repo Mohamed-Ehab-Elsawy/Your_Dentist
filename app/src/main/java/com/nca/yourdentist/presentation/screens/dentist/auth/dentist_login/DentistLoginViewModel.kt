@@ -4,12 +4,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.model.requests.AuthRequest
-import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
 import com.nca.yourdentist.domain.usecase.auth.SignInWithEmailUseCase
+import com.nca.yourdentist.utils.AppProviders
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.UiState
-import com.nca.yourdentist.utils.providers.DentistProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -44,8 +44,8 @@ class DentistLoginViewModel(
                 val request = AuthRequest(email.value, password.value)
                 val result = useCase.invoke(request, isDentist = true)
                 result.onSuccess { user ->
-                    if (user != null && DentistProvider.dentist?.type == Constant.DENTIST) {
-                        preferencesHelper.saveDentist(DentistProvider.dentist!!)
+                    if (user != null && AppProviders.dentist?.type == Constant.DENTIST) {
+                        preferencesHelper.putDentist(AppProviders.dentist!!)
                         _uiState.value = UiState.Success(user)
                     } else {
                         _snackBarMessage.emit("User not found")
@@ -63,6 +63,14 @@ class DentistLoginViewModel(
         }
     }
 
+    fun changeLanguage() {
+        val currentLanguage = preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+        val newLanguage =
+            if (currentLanguage == Constant.ENGLISH_LANGUAGE_KEY) Constant.ARABIC_LANGUAGE_KEY
+            else Constant.ENGLISH_LANGUAGE_KEY
+
+        preferencesHelper.putString(PreferencesHelper.CURRENT_LANGUAGE, newLanguage)
+    }
     private fun validateInputs(): Boolean {
         var isValid = true
 

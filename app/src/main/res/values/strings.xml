@@ -28,7 +28,6 @@
     <string name="gender">Gender</string>
     <string name="birthdate">Birthdate</string>
     <string name="phone_number">Phone Number</string>
-    <string name="default_web_client_id" translatable="false">474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com</string>
     <string name="log_in_with_google">Log in with Google</string>
     <string name="take_photo">Take Photo</string>
     <string name="open_model">openModel</string>
@@ -63,12 +62,9 @@
             <p>Our aim is to simplify the process of diagnosis and consultation, empowering patients with accurate and timely information to address their dental issues effectively.</p>
         ]]>
     </string>
-
-    <string name="hello_iam_mohamed_ehab" translatable="false">Hello, iam Mohamed Ehab a Fresh Android Developer that have a big dreams want to achieve</string>
     <string name="dentist_login">Dentist login</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
     <string name="patient">patient</string>
     <string name="dentist">dentist</string>
     <string name="login_as_patient">Login As Patient</string>
@@ -87,7 +83,7 @@
     <string name="question_4">Do you have any facial swelling related to your teeth?</string>
     <string name="no_internet_connection">No Internet Connection</string>
     <string name="try_again">Try Again</string>
-    <string name="book_an_appointment">Book an appointment</string>
+    <string name="book_an_appointment">Book a dentist appointment</string>
     <string name="choose_dentist">Choose a dentist</string>
     <string name="dentist_img">dentist_img</string>
     <string name="book_now">Book Now</string>
@@ -118,8 +114,44 @@
     <string name="login_failed">Login failed</string>
     <string name="password_reset_email_sent">Password reset email sent</string>
     <string name="icon">icon</string>
+    <string name="submit">Submit</string>
+    <string name="results">Results</string>
+    <string name="uploaded_x_ray">Uploaded X-ray</string>
+    <string name="detected_caries">Detected Caries x-Ray</string>
+    <string name="city">City</string>
+    <string name="area">Area</string>
+    <string name="check_your_internet_connection">Check your internet connection</string>
+    <string name="notifications">Notifications</string>
+    <string name="records">Records</string>
+    <string name="scan_now">Scan Now</string>
+    <string name="welcome">"Welcome, "</string>
+    <string name="your_qr_code">Your QR Code</string>
+    <string name="close">Close</string>
+    <string name="no_notifications_yet">No Notifications Yet</string>
+    <string name="no_records_yet">No records yet</string>
+    <string name="check_up_your_teeth_now">Check up your teeth now</string>
+    <string name="easily_analyze_your_x_ray_and_get_a_detailed_report">Easily analyze your X-ray, and get a detailed report</string>
+    <string name="answer_a_quick_questionnaire_to_help_us_better_understand_your_condition">Answer a quick questionnaire to help us better understand your condition</string>
+    <string name="book_a_specialist_dentist_to_start_treatment_the_fastest_way">Book a specialist dentist to start treatment the fastest way</string>
+
+
+    <!--    untranslatable string   -->
+    <string name="default_web_client_id" translatable="false">474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com</string>
+    <string name="view_x_ray" translatable="false">View X-ray</string>
+    <string name="qr_code_preview" translatable="false">QR Code Preview</string>
+    <string name="no_notifications_image" translatable="false">no notifications image</string>
+    <string name="result_image" translatable="false">Result x-Ray</string>
+    <string name="x_ray_image" translatable="false">X-Ray image</string>
     <string name="progress_animation" translatable="false">Progress Animation</string>
     <string name="page_number_animation" translatable="false">Page Number Animation</string>
-    <string name="submit">Submit</string>
+    <string name="dropdown" translatable="false">dropdown</string>
+    <string name="dentist_placeholder_image" translatable="false">Dentist Placeholder Image</string>
+    <string name="dentist_profile_image" translatable="false">Dentist Profile Image</string>
+    <string name="generated_qr_code" translatable="false">Generated QR Code</string>
+    <string name="background" translatable="false">Background</string>
+    <string name="qr_code_icon" translatable="false">qr code icon</string>
+    <string name="take_a_pic" translatable="false">take a pic</string>
+    <string name="pagers_images" translatable="false">pagers images</string>
+
 
 </resources>

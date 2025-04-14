@@ -124,4 +124,23 @@
     <string name="password_reset_email_sent">تم ارسال إيميل لتغير كلمة المرور</string>
     <string name="icon">إيقونة</string>
     <string name="submit">تقديم</string>
+    <string name="results">النتيجة</string>
+    <string name="detected_caries">الأشعة بها التسوس المكتشف</string>
+    <string name="uploaded_x_ray">الأشعة</string>
+    <string name="city">المحافظة</string>
+    <string name="area">المنطقة</string>
+    <string name="check_your_internet_connection">تحقق من الإتصال بالأنترنت</string>
+    <string name="notifications">تنبيهات</string>
+    <string name="records">سجل المريض</string>
+    <string name="scan_now">أفحص الان</string>
+    <string name="welcome">"أهلا ,  "</string>
+    <string name="your_qr_code">رمز الاستجابه السريع</string>
+    <string name="close">إغلاق</string>
+    <string name="no_notifications_yet">لا توجد إشعارات بعد</string>
+    <string name="no_records_yet">لا يوجد سجل للمريض بعد</string>
+    <string name="check_up_your_teeth_now">أطمئن علي أسنانك الان</string>
+    <string name="easily_analyze_your_x_ray_and_get_a_detailed_report">حلل أشعة إكس بسهولة، وهنعملك تقرير مفصل</string>
+    <string name="answer_a_quick_questionnaire_to_help_us_better_understand_your_condition">جاوِب على استبيان بسيط يساعدنا نفهم حالتك بشكل أدق</string>
+    <string name="book_a_specialist_dentist_to_start_treatment_the_fastest_way">احجز مع دكتور متخصص عشان تبدأ العلاج بأسرع طريقة</string>
+
 </resources>

@@ -9,8 +9,16 @@ pluginManagement {
         }
         mavenCentral()
         gradlePluginPortal()
+        maven {
+            url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
+        }
+        maven {
+            url = uri("https://maven.pkg.jetbrains.space/kotlin/p/kotlin/dev")
+        }
     }
 }
+
+@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {

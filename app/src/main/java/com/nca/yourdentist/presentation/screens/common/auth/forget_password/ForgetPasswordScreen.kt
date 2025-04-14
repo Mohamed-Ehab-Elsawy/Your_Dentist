@@ -32,7 +32,7 @@ import androidx.navigation.NavController
 import com.nca.yourdentist.R
 import com.nca.yourdentist.presentation.component.ui.ProgressIndicator
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
-import com.nca.yourdentist.presentation.component.ui.text_fields.EmailTextField
+import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.utils.UiState

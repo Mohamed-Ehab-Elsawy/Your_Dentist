@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.nca.yourdentist.di.appModule
 import com.nca.yourdentist.di.authUseCaseModule
+import com.nca.yourdentist.di.bookingUseCaseModule
 import com.nca.yourdentist.di.firebaseModule
 import com.nca.yourdentist.di.repositoryModule
 import com.nca.yourdentist.di.sharedPreferencesModule
@@ -27,6 +28,7 @@ class YourDentist : Application() {
                     repositoryModule,
                     sharedPreferencesModule,
                     authUseCaseModule,
+                    bookingUseCaseModule,
                     viewModelModule
                 )
             )

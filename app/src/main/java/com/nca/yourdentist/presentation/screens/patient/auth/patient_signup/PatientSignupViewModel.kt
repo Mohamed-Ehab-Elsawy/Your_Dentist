@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.model.Patient
 import com.nca.yourdentist.data.model.requests.AuthRequest
-import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
 import com.nca.yourdentist.domain.usecase.auth.SignupUseCase
+import com.nca.yourdentist.utils.AppProviders
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.UiState
-import com.nca.yourdentist.utils.providers.PatientProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,8 +77,8 @@ class PatientSignupViewModel(
                 val request = AuthRequest(email.value, password.value, patient)
                 val result = useCase.invoke(request)
                 result.onSuccess { user ->
-                    if (user != null && PatientProvider.patient?.type == Constant.PATIENT) {
-                        preferencesHelper.savePatient(PatientProvider.patient!!)
+                    if (user != null && AppProviders.patient?.type == Constant.PATIENT) {
+                        preferencesHelper.putPatient(AppProviders.patient!!)
                         _uiState.value = UiState.Success(user)
                     }
                 }
@@ -140,6 +140,9 @@ class PatientSignupViewModel(
         Log.e("PatientSignupViewModel", "data validation: $isValid")
         return isValid
     }
+
+    fun appLanguage(): String =
+        preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
 
     fun onNameChange(newName: String) {
         name.value = newName

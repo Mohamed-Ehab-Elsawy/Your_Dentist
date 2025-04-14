@@ -10,6 +10,7 @@ interface AuthRepository {
     suspend fun patientLogin(authRequest: AuthRequest): Result<FirebaseUser?>
     suspend fun forgetPassword(email: String)
     suspend fun updateUserData(patient: Patient): Result<Patient>
+    suspend fun uploadQRCode(image: ByteArray, patientId: String)
     suspend fun logout()
 
     // Dentist functions

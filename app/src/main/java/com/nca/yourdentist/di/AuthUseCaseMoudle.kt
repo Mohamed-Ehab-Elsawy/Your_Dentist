@@ -7,6 +7,7 @@ import com.nca.yourdentist.domain.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.domain.usecase.auth.SignInWithGoogleUseCase
 import com.nca.yourdentist.domain.usecase.auth.SignupUseCase
 import com.nca.yourdentist.domain.usecase.auth.UpdatePatientDataUseCase
+import com.nca.yourdentist.domain.usecase.auth.UploadQRCodeUseCase
 import org.koin.dsl.module
 
 val authUseCaseModule = module {
@@ -18,6 +19,7 @@ val authUseCaseModule = module {
     factory { UpdatePatientDataUseCase(get<AuthRepository>()) }
     //Forget Password
     factory { ForgetPasswordUseCase(get<AuthRepository>()) }
+    factory { UploadQRCodeUseCase(get<AuthRepository>()) }
     //Logout
     factory { LogoutUseCase(get<AuthRepository>()) }
 }

@@ -1,12 +1,16 @@
 package com.nca.yourdentist.presentation.component.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import android.os.Build
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -249,21 +253,22 @@ val unspecified_scheme = ColorFamily(
 )
 
 @Composable
-fun AppTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
+fun MyAppTheme(
     dynamicColor: Boolean = true,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
-    val colorScheme = lightScheme
+    val context = LocalContext.current
+    val colorScheme = if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        dynamicLightColorScheme(context)
+    } else lightScheme
 
-    /* when {
-         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-             val context = LocalContext.current
-             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-             }
-         else -> lightScheme
-     } */
+    val systemUiController = rememberSystemUiController()
+    LaunchedEffect(colorScheme) {
+        systemUiController.setSystemBarsColor(color = colorScheme.primary)
+        //systemUiController.setStatusBarColor(color = colorScheme.primary)
+        //systemUiController.setNavigationBarColor(color = colorScheme.surface)
+    }
+
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
@@ -271,3 +276,26 @@ fun AppTheme(
     )
 }
 
+
+//@Composable
+//fun AppTheme(
+//    darkTheme: Boolean = isSystemInDarkTheme(),
+//    // Dynamic color is available on Android 12+
+//    dynamicColor: Boolean = true,
+//    content: @Composable() () -> Unit
+//) {
+//    val colorScheme = lightScheme
+//
+//    /* when {
+//         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//             val context = LocalContext.current
+//             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//             }
+//         else -> lightScheme
+//     } */
+//    MaterialTheme(
+//        colorScheme = colorScheme,
+//        typography = AppTypography,
+//        content = content
+//    )
+//}

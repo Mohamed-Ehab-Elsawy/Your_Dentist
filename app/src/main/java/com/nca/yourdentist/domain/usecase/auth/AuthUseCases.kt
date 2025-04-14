@@ -35,6 +35,12 @@ class UpdatePatientDataUseCase(private val authRepository: AuthRepository) {
     }
 }
 
+class UploadQRCodeUseCase(private val authRepository: AuthRepository) {
+    suspend operator fun invoke(image: ByteArray, patientId: String) {
+        authRepository.uploadQRCode(image, patientId)
+    }
+}
+
 class ForgetPasswordUseCase(private val authRepository: AuthRepository) {
     suspend operator fun invoke(email: String) {
         authRepository.forgetPassword(email)

@@ -1,77 +1,57 @@
 package com.nca.yourdentist.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.nca.yourdentist.navigation.MainScreens.CompletePatientData
+import com.nca.yourdentist.navigation.MainScreens.DentistLogin
+import com.nca.yourdentist.navigation.MainScreens.ForgetPassword
+import com.nca.yourdentist.navigation.MainScreens.Intro
+import com.nca.yourdentist.navigation.MainScreens.PatientLogin
+import com.nca.yourdentist.navigation.MainScreens.PatientSignup
+import com.nca.yourdentist.navigation.MainScreens.SelectUserType
+import com.nca.yourdentist.navigation.MainScreens.Splash
 import com.nca.yourdentist.presentation.screens.common.auth.forget_password.ForgetPasswordScreen
 import com.nca.yourdentist.presentation.screens.common.auth.select_type.SelectUserTypeScreen
 import com.nca.yourdentist.presentation.screens.common.intro.IntroScreen
 import com.nca.yourdentist.presentation.screens.common.splash.SplashScreen
 import com.nca.yourdentist.presentation.screens.dentist.auth.dentist_login.DentistLoginScreen
-import com.nca.yourdentist.presentation.screens.dentist.home.DentistHomeScreen
-import com.nca.yourdentist.presentation.screens.dentist.settings.DentistSettingsScreen
 import com.nca.yourdentist.presentation.screens.patient.auth.complete_profile.CompleteProfileScreen
 import com.nca.yourdentist.presentation.screens.patient.auth.patient_login.PatientLoginScreen
 import com.nca.yourdentist.presentation.screens.patient.auth.patient_signup.PatientSignupScreen
-import com.nca.yourdentist.presentation.screens.patient.home.PatientHomeScreen
-import com.nca.yourdentist.presentation.screens.patient.questionnaire.QuestionnaireScreen
-import com.nca.yourdentist.presentation.screens.patient.results.PatientResultsScreen
-import com.nca.yourdentist.presentation.screens.patient.settings.PatientSettingsScreen
-import com.nca.yourdentist.presentation.screens.patient.settings.about_us.PatientAboutUsSettings
-import com.nca.yourdentist.presentation.screens.patient.settings.notification_settings.PatientNotificationSettings
-import com.nca.yourdentist.presentation.screens.patient.upload_image.UploadRadiographScreen
 
-
-sealed class Screen(val route: String) {
+sealed class MainScreens(val route: String) {
     //Common
-    data object Splash : Screen("splash_screen")
-    data object Intro : Screen("intro_screen")
-    data object SelectUserType : Screen("select_user_type_screen")
-    data object ForgetPassword : Screen("forget_password_screen")
+    data object Splash : MainScreens("splash_screen")
+    data object Intro : MainScreens("intro_screen")
+    data object SelectUserType : MainScreens("select_user_type_screen")
+    data object ForgetPassword : MainScreens("forget_password_screen")
 
     //Patient
-    data object PatientLogin : Screen("patient_login_screen")
-    data object PatientSignup : Screen("patient_signup_screen")
-    data object CompletePatientData : Screen("patient_complete_data_screen")
-    data object PatientHome : Screen("patient_home_screen")
-    data object PatientUploadImage : Screen("patient_upload_image")
-    data object PatientQuestionnaire : Screen("patient_questionnaire")
-    data object PatientResults : Screen("patient_results")
-    data object PatientSettings : Screen("patient_settings")
-    data object PatientNotificationSettings : Screen("patient_notification_settings")
-    data object PatientAboutUsSettings : Screen("patient_about_us_settings")
+    data object PatientLogin : MainScreens("patient_login_screen")
+    data object PatientSignup : MainScreens("patient_signup_screen")
+    data object CompletePatientData : MainScreens("patient_complete_data_screen")
 
     //Dentist
-    data object DentistLogin : Screen("dentist_login_screen")
-    data object DentistHome : Screen("dentist_home_screen")
-    data object DentistSettings : Screen("dentist_settings_screen")
+    data object DentistLogin : MainScreens("dentist_login_screen")
 }
 
 @Composable
-fun AppNavGraph() {
-    val navigator = rememberNavController()
-
-    NavHost(navController = navigator, startDestination = Screen.Splash.route) {
+fun AppNavGraph(navController: NavHostController) {
+    NavHost(navController = navController, startDestination = Splash.route) {
         //Common
-        composable(Screen.Splash.route) { SplashScreen(navigator) }
-        composable(Screen.Intro.route) { IntroScreen(navigator) }
-        composable(Screen.SelectUserType.route) { SelectUserTypeScreen(navigator) }
-        composable(Screen.ForgetPassword.route) { ForgetPasswordScreen(navigator) }
+        composable(Splash.route) { SplashScreen(navController) }
+        composable(Intro.route) { IntroScreen(navController) }
+        composable(SelectUserType.route) { SelectUserTypeScreen(navController) }
+        composable(ForgetPassword.route) { ForgetPasswordScreen(navController) }
+
         //Patient
-        composable(Screen.PatientLogin.route) { PatientLoginScreen(navigator) }
-        composable(Screen.PatientSignup.route) { PatientSignupScreen(navigator) }
-        composable(Screen.CompletePatientData.route) { CompleteProfileScreen(navigator) }
-        composable(Screen.PatientHome.route) { PatientHomeScreen(navigator) }
-        composable(Screen.PatientUploadImage.route) { UploadRadiographScreen(navigator) }
-        composable(Screen.PatientQuestionnaire.route) { QuestionnaireScreen(navigator) }
-        composable(Screen.PatientResults.route) { PatientResultsScreen(navigator) }
-        composable(Screen.PatientSettings.route) { PatientSettingsScreen(navigator) }
-        composable(Screen.PatientNotificationSettings.route) { PatientNotificationSettings(navigator) }
-        composable(Screen.PatientAboutUsSettings.route) { PatientAboutUsSettings(navigator) }
+        composable(PatientLogin.route) { PatientLoginScreen(navController) }
+        composable(PatientSignup.route) { PatientSignupScreen(navController) }
+        composable(CompletePatientData.route) { CompleteProfileScreen(navController) }
+
         //Dentist
-        composable(Screen.DentistLogin.route) { DentistLoginScreen(navigator) }
-        composable(Screen.DentistHome.route) { DentistHomeScreen(navigator) }
-        composable(Screen.DentistSettings.route) { DentistSettingsScreen(navigator) }
+        composable(DentistLogin.route) { DentistLoginScreen(navController) }
     }
 }

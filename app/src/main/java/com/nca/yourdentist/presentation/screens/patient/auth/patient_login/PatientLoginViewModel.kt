@@ -9,13 +9,13 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
+import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.model.requests.AuthRequest
-import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
 import com.nca.yourdentist.domain.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.domain.usecase.auth.SignInWithGoogleUseCase
+import com.nca.yourdentist.utils.AppProviders
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.UiState
-import com.nca.yourdentist.utils.providers.PatientProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -52,8 +52,8 @@ class PatientLoginViewModel(
                 val request = AuthRequest(email.value, password.value)
                 val result = signInWithEmailUseCase.invoke(request, isDentist = false)
                 result.onSuccess { user ->
-                    if (user != null && PatientProvider.patient?.type == Constant.PATIENT) {
-                        preferencesHelper.savePatient(PatientProvider.patient!!)
+                    if (user != null && AppProviders.patient?.type == Constant.PATIENT) {
+                        preferencesHelper.putPatient(AppProviders.patient!!)
                         _uiState.value = UiState.Success(user)
                     } else {
                         _snackBarMessage.emit("User not found")
@@ -90,6 +90,7 @@ class PatientLoginViewModel(
 
                 googleSignInUseCase.invoke(googleIdTokenCredential.idToken)
                     .onSuccess { user ->
+                        preferencesHelper.putPatient(AppProviders.patient!!)
                         _uiState.value = UiState.Success(user!!)
                     }
                     .onFailure { t ->
@@ -102,6 +103,15 @@ class PatientLoginViewModel(
                 _uiState.value = UiState.Idle
             }
         }
+    }
+
+    fun changeLanguage() {
+        val currentLanguage = preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+        val newLanguage =
+            if (currentLanguage == Constant.ENGLISH_LANGUAGE_KEY) Constant.ARABIC_LANGUAGE_KEY
+            else Constant.ENGLISH_LANGUAGE_KEY
+
+        preferencesHelper.putString(PreferencesHelper.CURRENT_LANGUAGE, newLanguage)
     }
 
     private fun validateInputs(): Boolean {

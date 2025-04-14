@@ -53,6 +53,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
+    //UI Controller
+    implementation(libs.accompanist.systemuicontroller)
     // ViewModel & LiveData
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
@@ -65,6 +67,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     // Login with google
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.play.services.auth)
@@ -80,7 +83,25 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     // Image Loading
     implementation(libs.coil.compose)
+    //Ktor
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    //implementation("ch.qos.logback:logback-classic:3.1.1")
+    // QR CODE Generator & Scanner
+    implementation(libs.zxing.core)
+    implementation(libs.barcode.scanning)
+
+
     implementation(libs.androidx.ui.text.google.fonts)
+
+    implementation(libs.compose.shimmer)
+    implementation(libs.accompanist.pager)
+
+    implementation(libs.material)
+
 
     // Testing dependencies
     testImplementation(libs.junit)

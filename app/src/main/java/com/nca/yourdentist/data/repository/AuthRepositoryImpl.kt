@@ -5,24 +5,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.nca.yourdentist.data.model.Dentist
 import com.nca.yourdentist.data.model.Patient
 import com.nca.yourdentist.data.model.requests.AuthRequest
 import com.nca.yourdentist.domain.repository.AuthRepository
+import com.nca.yourdentist.utils.AppProviders
 import com.nca.yourdentist.utils.Constant
-import com.nca.yourdentist.utils.providers.DentistProvider
-import com.nca.yourdentist.utils.providers.PatientProvider
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl(
     private val firebaseAuth: FirebaseAuth,
-    firestore: FirebaseFirestore
+    firestore: FirebaseFirestore,
+    firebaseStorage: FirebaseStorage
 ) : AuthRepository {
-
-
 
     private val patientCollection = firestore.collection(Constant.PATIENT_COLLECTIONS)
     private val dentistCollection = firestore.collection(Constant.DENTIST_COLLECTIONS)
+
+    private val qrCodeStorage = firebaseStorage.reference.child(Constant.PATIENTS_QR_CODES)
 
     override suspend fun signup(authRequest: AuthRequest): Result<FirebaseUser?> =
         try {
@@ -31,7 +32,7 @@ class AuthRepositoryImpl(
             ).await()
             authRequest.patient?.id = result.user?.uid
             patientCollection.document(result.user?.uid!!).set(authRequest.patient!!).await()
-            PatientProvider.patient = authRequest.patient
+            AppProviders.patient = authRequest.patient
             Result.success(result.user)
         } catch (t: Throwable) {
             Result.failure(t)
@@ -55,7 +56,7 @@ class AuthRepositoryImpl(
                 patientCollection.document(result.user!!.uid).set(patient).await()
                 currentPatient = patient
             }
-            PatientProvider.patient = currentPatient
+            AppProviders.patient = currentPatient
             return Result.success(result.user)
         } catch (t: Throwable) {
             return Result.failure(t)
@@ -71,7 +72,7 @@ class AuthRepositoryImpl(
                 ).await()
             val snapshot =
                 patientCollection.document(result.user!!.uid).get().await()
-            PatientProvider.patient = snapshot.toObject(Patient::class.java)
+            AppProviders.patient = snapshot.toObject(Patient::class.java)
             return Result.success(result.user)
         } catch (t: Throwable) {
             return Result.failure(t)
@@ -89,7 +90,7 @@ class AuthRepositoryImpl(
 
             val snapshot =
                 dentistCollection.document(result.user!!.uid).get().await()
-            DentistProvider.dentist = snapshot.toObject(Dentist::class.java)
+            AppProviders.dentist = snapshot.toObject(Dentist::class.java)
             return Result.success(result.user)
         } catch (t: Throwable) {
             return Result.failure(t)
@@ -99,7 +100,7 @@ class AuthRepositoryImpl(
     override suspend fun updateUserData(patient: Patient): Result<Patient> {
         try {
             patientCollection.document(patient.id!!).set(patient).await()
-            PatientProvider.patient = patient
+            AppProviders.patient = patient
             return Result.success(patient)
         } catch (t: Throwable) {
             return Result.failure(t)
@@ -111,6 +112,17 @@ class AuthRepositoryImpl(
             firebaseAuth.sendPasswordResetEmail(email).await()
         } catch (t: Throwable) {
             Log.e("FirebaseServicesImpl", "forgetPassword: ${t.localizedMessage}")
+        }
+    }
+
+    override suspend fun uploadQRCode(image: ByteArray, patientId: String) {
+        val imageRef = qrCodeStorage.child(patientId)
+        image.let {
+            imageRef.putBytes(it).addOnSuccessListener {
+                imageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                    patientCollection.document(patientId).update("qrCode", downloadUri)
+                }
+            }
         }
     }
 

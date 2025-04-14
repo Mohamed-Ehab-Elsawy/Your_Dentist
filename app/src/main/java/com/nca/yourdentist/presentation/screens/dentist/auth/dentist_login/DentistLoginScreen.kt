@@ -1,5 +1,7 @@
 package com.nca.yourdentist.presentation.screens.dentist.auth.dentist_login
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -35,18 +38,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.data.shared_preferences.PreferencesHelper
-import com.nca.yourdentist.navigation.Screen
+import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.presentation.component.ui.ProgressIndicator
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
-import com.nca.yourdentist.presentation.component.ui.text_fields.EmailTextField
-import com.nca.yourdentist.presentation.component.ui.text_fields.PasswordTextField
+import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
+import com.nca.yourdentist.presentation.component.ui.customized.PasswordTextField
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onErrorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
+import com.nca.yourdentist.presentation.screens.dentist.DentistMainActivity
+import com.nca.yourdentist.utils.AppProviders
 import com.nca.yourdentist.utils.UiState
-import com.nca.yourdentist.utils.providers.DentistProvider
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.getKoin
@@ -62,6 +65,8 @@ fun DentistLoginScreen(
     val keyboardController = LocalSoftwareKeyboardController.current
     val snackBarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val activity = context as? Activity
 
     LaunchedEffect(Unit) {
         viewModel.snackBarMessage.collect { message ->
@@ -77,7 +82,10 @@ fun DentistLoginScreen(
                 title = stringResource(R.string.dentist_login),
                 iconRes = R.drawable.ic_world,
                 iconTint = primaryLight,
-                onIconClick = {}
+                onIconClick = {
+                    viewModel.changeLanguage()
+                    activity?.recreate()
+                }
             )
         },
         snackbarHost = {
@@ -159,12 +167,10 @@ fun DentistLoginScreen(
 
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                if (DentistProvider.dentist != null) {
-                    preferencesHelper.saveDentist(DentistProvider.dentist!!)
-                    navController.navigate(Screen.DentistHome.route) {
-                        popUpTo(0) { inclusive = true }
-                        launchSingleTop = true
-                    }
+                if (AppProviders.dentist != null) {
+                    preferencesHelper.putDentist(AppProviders.dentist!!)
+                    activity?.startActivity(Intent(context, DentistMainActivity::class.java))
+                    activity?.finish()
                 }
             }
         }

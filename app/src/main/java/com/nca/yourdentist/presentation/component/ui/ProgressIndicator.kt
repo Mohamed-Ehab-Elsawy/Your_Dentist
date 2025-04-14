@@ -1,6 +1,8 @@
 package com.nca.yourdentist.presentation.component.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.nca.yourdentist.R
@@ -30,22 +31,23 @@ import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 fun ProgressIndicator(modifier: Modifier = Modifier) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = modifier
-            .fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         Card(
             modifier = modifier
-                .width(140.dp)
+                .width(150.dp)
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
-            elevation = CardDefaults.elevatedCardElevation(0.dp)
+            elevation = CardDefaults.elevatedCardElevation(0.dp),
+            border = BorderStroke(2.dp, primaryLight)
         ) {
             Column(
                 modifier = modifier
                     .background(Color.White.copy(alpha = 0.8f))
                     .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .padding(horizontal = 16.dp, vertical = 32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
             ) {
                 CircularProgressIndicator(color = primaryLight)
 
@@ -59,10 +61,4 @@ fun ProgressIndicator(modifier: Modifier = Modifier) {
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-private fun ProgressIndicatorPreview() {
-    ProgressIndicator()
 }

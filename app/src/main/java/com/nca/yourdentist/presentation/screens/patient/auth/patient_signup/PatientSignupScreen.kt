@@ -1,6 +1,9 @@
 package com.nca.yourdentist.presentation.screens.patient.auth.patient_signup
 
-import androidx.compose.foundation.background
+import android.app.Activity
+import android.content.Intent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,19 +40,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.navigation.Screen
 import com.nca.yourdentist.presentation.component.ui.BirthdatePicker
-import com.nca.yourdentist.presentation.component.ui.GenderDropdownList
 import com.nca.yourdentist.presentation.component.ui.ProgressIndicator
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
-import com.nca.yourdentist.presentation.component.ui.text_fields.EmailTextField
-import com.nca.yourdentist.presentation.component.ui.text_fields.PasswordTextField
+import com.nca.yourdentist.presentation.component.ui.customized.CustomStringDropDownMenu
+import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
+import com.nca.yourdentist.presentation.component.ui.customized.PasswordTextField
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onErrorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
+import com.nca.yourdentist.presentation.screens.patient.PatientMainActivity
+import com.nca.yourdentist.utils.AppProviders
+import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.UiState
-import com.nca.yourdentist.utils.providers.PatientProvider
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -60,7 +66,8 @@ fun PatientSignupScreen(
     val uiState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
     val coroutineScope = rememberCoroutineScope()
-
+    val context = LocalContext.current
+    val activity = context as? Activity
 
     LaunchedEffect(Unit) {
         viewModel.snackBarMessage.collect { message ->
@@ -74,7 +81,11 @@ fun PatientSignupScreen(
         topBar = {
             TopApplicationBar(
                 title = (stringResource(id = R.string.sign_up)),
-                iconRes = R.drawable.ic_arrow_left,
+                iconRes =
+                    if (viewModel.appLanguage() == Constant.ENGLISH_LANGUAGE_KEY)
+                        R.drawable.ic_arrow_left
+                    else
+                        R.drawable.ic_arrow_right,
                 iconTint = primaryLight, onIconClick = {
                     navController.popBackStack()
                 }
@@ -89,106 +100,124 @@ fun PatientSignupScreen(
                 )
             }
         }
-    ) { padding ->
-        Column(
+    ) { paddingValues ->
+        Box(
             modifier = Modifier
-                .padding(padding)
-                .background(color = Color.White)
+                .padding(paddingValues)
                 .fillMaxSize()
-                .padding(horizontal = 20.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
-            OutlinedTextField(
-                value = viewModel.name.value,
-                onValueChange = { viewModel.onNameChange(it) },
-                maxLines = 1,
-                label = { Text(stringResource(id = R.string.full_name)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                isError = viewModel.nameError.value != null,
-                supportingText = { viewModel.nameError.value?.let { Text(it, color = errorLight) } }
+            Image(
+                painter = painterResource(id = R.drawable.img_background),
+                contentDescription = stringResource(R.string.background),
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentScale = ContentScale.FillBounds
             )
-
-            EmailTextField(
-                value = viewModel.email.value,
-                onValueChange = { viewModel.onEmailChange(it) },
-                errorMessage = viewModel.emailError.value
-            )
-
-            GenderDropdownList(
-                value = viewModel.gender.value,
-                onValueChange = { viewModel.onGenderChange(it) },
-                errorMessage = viewModel.genderError.value
-            )
-
-            BirthdatePicker(
-                value = viewModel.birthdate.value,
-                onValueChange = { viewModel.onBirthdateChange(it) },
-                errorMessage = viewModel.birthdateError.value
-            )
-
-            OutlinedTextField(
-                value = viewModel.phoneNumber.value,
-                onValueChange = { viewModel.onPhoneNumberChange(it) },
-                maxLines = 1,
-                label = { Text(stringResource(id = R.string.phone_number)) },
-                modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Phone,
-                    imeAction = ImeAction.Done
-                ),
-                isError = viewModel.phoneNumberError.value != null,
-                supportingText = {
-                    viewModel.phoneNumberError.value?.let {
-                        Text(
-                            it,
-                            color = errorLight
-                        )
-                    }
-                }
-            )
-
-            PasswordTextField(
-                value = viewModel.password.value,
-                onValueChange = { viewModel.onPasswordChange(it) },
-                label = stringResource(id = R.string.password),
-                errorMessage = viewModel.passwordError.value
-            )
-
-            PasswordTextField(
-                value = viewModel.confirmPassword.value,
-                onValueChange = { viewModel.onConfirmPasswordChange(it) },
-                label = stringResource(id = R.string.confirm_your_password),
-                errorMessage = viewModel.confirmPasswordError.value
-            )
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = {
-                    keyboardController?.hide()
-                    viewModel.signup()
-                },
-                shape = RoundedCornerShape(8.dp),
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = primaryLight),
-                enabled = uiState !is UiState.Loading
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    stringResource(id = R.string.create_account),
-                    color = onPrimaryLight,
-                    fontSize = 18.sp,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            }
+                Spacer(modifier = Modifier.height(40.dp))
 
+                OutlinedTextField(
+                    value = viewModel.name.value,
+                    onValueChange = { viewModel.onNameChange(it) },
+                    maxLines = 1,
+                    label = { Text(stringResource(id = R.string.full_name)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
+                    ),
+                    isError = viewModel.nameError.value != null,
+                    supportingText = {
+                        viewModel.nameError.value?.let { Text(it, color = errorLight) }
+                    }
+                )
+
+                EmailTextField(
+                    value = viewModel.email.value,
+                    onValueChange = { viewModel.onEmailChange(it) },
+                    errorMessage = viewModel.emailError.value
+                )
+
+                CustomStringDropDownMenu(
+                    options = listOf(
+                        stringResource(id = R.string.male),
+                        stringResource(id = R.string.female)
+                    ),
+                    value = viewModel.gender.value,
+                    label = stringResource(id = R.string.gender),
+                    onValueChange = { viewModel.onGenderChange(it) },
+                    errorMessage = viewModel.genderError.value
+                )
+
+                BirthdatePicker(
+                    value = viewModel.birthdate.value,
+                    onValueChange = { viewModel.onBirthdateChange(it) },
+                    errorMessage = viewModel.birthdateError.value
+                )
+
+                OutlinedTextField(
+                    value = viewModel.phoneNumber.value,
+                    onValueChange = { viewModel.onPhoneNumberChange(it) },
+                    maxLines = 1,
+                    label = { Text(stringResource(id = R.string.phone_number)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Phone,
+                        imeAction = ImeAction.Done
+                    ),
+                    isError = viewModel.phoneNumberError.value != null,
+                    supportingText = {
+                        viewModel.phoneNumberError.value?.let {
+                            Text(
+                                it,
+                                color = errorLight
+                            )
+                        }
+                    }
+                )
+
+                PasswordTextField(
+                    value = viewModel.password.value,
+                    onValueChange = { viewModel.onPasswordChange(it) },
+                    errorMessage = viewModel.passwordError.value
+                )
+
+                PasswordTextField(
+                    value = viewModel.confirmPassword.value,
+                    onValueChange = { viewModel.onConfirmPasswordChange(it) },
+                    label = stringResource(id = R.string.confirm_your_password),
+                    errorMessage = viewModel.confirmPasswordError.value
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        keyboardController?.hide()
+                        viewModel.signup()
+                    },
+                    shape = RoundedCornerShape(8.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = primaryLight),
+                    enabled = uiState !is UiState.Loading
+                ) {
+                    Text(
+                        stringResource(id = R.string.create_account),
+                        color = onPrimaryLight,
+                        fontSize = 18.sp,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
+
+            }
         }
     }
+
     when (uiState) {
         is UiState.Loading -> {
             ProgressIndicator()
@@ -196,11 +225,11 @@ fun PatientSignupScreen(
 
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                if (PatientProvider.patient != null) {
-                    navController.navigate(Screen.PatientHome.route) {
-                        popUpTo(0) { inclusive = true }
-                        launchSingleTop = true
-                    }
+                if (AppProviders.patient != null) {
+                    activity?.startActivity(
+                        Intent(context, PatientMainActivity::class.java)
+                    )
+                    activity?.finish()
                 }
             }
         }

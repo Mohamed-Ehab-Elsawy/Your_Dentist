@@ -6,54 +6,70 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.navigation.Screen
+import com.nca.yourdentist.navigation.MainScreens
+import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
+import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
+import com.nca.yourdentist.presentation.component.ui.theme.white
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SelectUserTypeScreen(navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        // Patient Selection
-        UserTypeCard(
-            title = stringResource(id = R.string.login_as_patient),
-            imageRes = R.drawable.img_patient,
-            onClick = { navController.navigate(Screen.PatientLogin.route) },
-            modifier = Modifier.weight(1f) // Distribute space equally
-        )
+fun SelectUserTypeScreen(
+    navController: NavController, viewModel: SelectTypeViewModel = koinViewModel()
+) {
+    LaunchedEffect(Unit) {
+        viewModel.setUpAppLanguage()
+    }
 
-        // Dentist Selection
-        UserTypeCard(
-            title = stringResource(id = R.string.login_as_dentist),
-            imageRes = R.drawable.img_dentist,
-            onClick = { navController.navigate(Screen.DentistLogin.route) },
-            modifier = Modifier.weight(1f) // Distribute space equally
-        )
+    Scaffold { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()
+        ) {
+            // Patient Selection
+            UserTypeCard(
+                title = stringResource(id = R.string.login_as_patient),
+                imageRes = R.drawable.img_patient,
+                onClick = { navController.navigate(MainScreens.PatientLogin.route) },
+                modifier = Modifier.weight(1f) // Distribute space equally
+            )
+
+            // Dentist Selection
+            UserTypeCard(
+                title = stringResource(id = R.string.login_as_dentist),
+                imageRes = R.drawable.img_dentist,
+                onClick = { navController.navigate(MainScreens.DentistLogin.route) },
+                modifier = Modifier.weight(1f) // Distribute space equally
+            )
+        }
     }
 }
 
 @Composable
-fun UserTypeCard(title: String, imageRes: Int, onClick: () -> Unit, modifier: Modifier = Modifier) {
+fun UserTypeCard(
+    modifier: Modifier = Modifier,
+    title: String, imageRes: Int, onClick: () -> Unit
+) {
     Surface(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() },
-        shape = RoundedCornerShape(0.dp),
-        color = MaterialTheme.colorScheme.background
+        color = white
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -67,14 +83,11 @@ fun UserTypeCard(title: String, imageRes: Int, onClick: () -> Unit, modifier: Mo
                     .fillMaxSize()
                     .alpha(0.6f)
             )
-
             Text(
                 text = title,
-                style = MaterialTheme.typography.displayMedium,
-                fontStyle = MaterialTheme.typography.displayLarge.fontStyle,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier
-                    .align(Alignment.Center)
+                style = AppTypography.displayLarge,
+                color = primaryLight,
+                textAlign = TextAlign.Center
             )
         }
     }

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.surfaceContainerLight
 
@@ -26,7 +26,7 @@ fun TopApplicationBar(
     title: String,
     iconRes: Int? = null,
     iconTint: Color? = null,
-    onIconClick: () -> Unit
+    onIconClick: (() -> Unit)? = null
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -41,13 +41,13 @@ fun TopApplicationBar(
 
             Text(
                 text = title,
-                style = MaterialTheme.typography.labelLarge,
+                style = AppTypography.headlineLarge,
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
                 color = primaryLight,
                 modifier = Modifier.align(Alignment.Center)
             )
-            if (iconRes != null && iconTint != null)
+            if (iconRes != null && iconTint != null && onIconClick != null)
                 IconButton(
                     onClick = onIconClick,
                     modifier = Modifier

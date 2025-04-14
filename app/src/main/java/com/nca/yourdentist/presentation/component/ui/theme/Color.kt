@@ -2,6 +2,10 @@ package com.nca.yourdentist.presentation.component.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val white = Color(0xFFFFFFFF)
+val black = Color(0xFF000000)
+val transparent = Color(0x00000000)
+
 val primaryLight = Color(0xFF445E91)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFD8E2FF)
