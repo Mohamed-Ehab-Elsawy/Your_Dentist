@@ -6,7 +6,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentType
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -20,7 +23,9 @@ fun EmailTextField(
     onValueChange: (String) -> Unit, errorMessage: String? = null
 ) {
     OutlinedTextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .semantics { contentType = ContentType.EmailAddress },
         value = value, maxLines = 1, onValueChange = onValueChange,
         textStyle = TextStyle(fontSize = AppTypography.bodyLarge.fontSize),
         label = { Text(text = stringResource(R.string.e_mail), style = AppTypography.bodyLarge) },

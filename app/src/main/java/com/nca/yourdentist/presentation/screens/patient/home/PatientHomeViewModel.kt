@@ -11,9 +11,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import com.nca.yourdentist.data.local.PreferencesHelper
-import com.nca.yourdentist.data.model.Patient
-import com.nca.yourdentist.domain.usecase.auth.UploadQRCodeUseCase
-import com.nca.yourdentist.utils.UiState
+import com.nca.yourdentist.data.models.users.Patient
+import com.nca.yourdentist.domain.remote.usecase.auth.UploadQRCodeUseCase
+import com.nca.yourdentist.presentation.utils.UiState
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

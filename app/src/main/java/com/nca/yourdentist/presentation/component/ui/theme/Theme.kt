@@ -264,7 +264,7 @@ fun MyAppTheme(
 
     val systemUiController = rememberSystemUiController()
     LaunchedEffect(colorScheme) {
-        systemUiController.setSystemBarsColor(color = colorScheme.primary)
+        systemUiController.setSystemBarsColor(color = primaryLight)
         //systemUiController.setStatusBarColor(color = colorScheme.primary)
         //systemUiController.setNavigationBarColor(color = colorScheme.surface)
     }

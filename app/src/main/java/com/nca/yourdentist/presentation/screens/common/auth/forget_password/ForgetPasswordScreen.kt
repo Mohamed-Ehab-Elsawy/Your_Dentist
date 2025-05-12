@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -30,12 +32,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.presentation.component.ui.ProgressIndicator
+import com.nca.yourdentist.presentation.component.ui.ProgressDialog
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
-import com.nca.yourdentist.utils.UiState
+import com.nca.yourdentist.presentation.utils.UiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -50,7 +52,7 @@ fun ForgetPasswordScreen(
         topBar = {
             TopApplicationBar(
                 title = stringResource(R.string.forget_password),
-                iconRes = R.drawable.ic_arrow_left,
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
                 iconTint = primaryLight,
                 onIconClick = {
                     navController.popBackStack()
@@ -112,7 +114,7 @@ fun ForgetPasswordScreen(
 
     when (uiState) {
         is UiState.Loading -> {
-            ProgressIndicator()
+            ProgressDialog()
         }
 
         is UiState.Success -> {

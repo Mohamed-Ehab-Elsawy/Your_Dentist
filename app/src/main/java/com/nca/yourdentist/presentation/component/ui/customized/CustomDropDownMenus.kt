@@ -18,12 +18,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.nca.yourdentist.R
-import com.nca.yourdentist.data.model.CityArea
+import com.nca.yourdentist.data.models.users.CityArea
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
+import com.nca.yourdentist.utils.localizedName
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,6 +92,7 @@ fun CustomMapDropDownMenu(
     onValueChange: (Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -100,7 +103,7 @@ fun CustomMapDropDownMenu(
                 .fillMaxWidth()
                 .menuAnchor(MenuAnchorType.PrimaryEditable, true),
             readOnly = true,
-            value = options[selectedKey]?.nameEn ?: "", // Show the selected Arabic text
+            value = options[selectedKey]?.localizedName(context) ?: "",
             onValueChange = {},
             label = { Text(text = label) },
             trailingIcon = {
@@ -119,7 +122,7 @@ fun CustomMapDropDownMenu(
         ) {
             options.forEach { (key, value) ->
                 DropdownMenuItem(
-                    text = { Text(value.nameEn, color = primaryLight) },
+                    text = { Text(value.localizedName(context), color = primaryLight) },
                     onClick = {
                         onValueChange.invoke(key) // Store Int value
                         expanded = false

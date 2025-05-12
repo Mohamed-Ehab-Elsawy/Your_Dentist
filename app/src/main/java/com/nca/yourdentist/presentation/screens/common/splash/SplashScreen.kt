@@ -19,66 +19,76 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.data.local.PreferencesHelper
-import com.nca.yourdentist.data.model.Dentist
-import com.nca.yourdentist.data.model.Patient
 import com.nca.yourdentist.navigation.MainScreens
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.screens.dentist.DentistMainActivity
 import com.nca.yourdentist.presentation.screens.patient.PatientMainActivity
-import com.nca.yourdentist.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.AppProviders.dentist
+import com.nca.yourdentist.presentation.utils.AppProviders.patient
 import kotlinx.coroutines.delay
-import org.koin.compose.getKoin
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SplashScreen(
     navController: NavController,
-    preferencesHelper: PreferencesHelper = getKoin().get()
+    vm: SplashViewModel = koinViewModel()
 ) {
     var isVisible by remember { mutableStateOf(false) }
     val context = LocalContext.current
     val activity = context as? Activity
 
-    val alphaAnim by animateFloatAsState(
-        targetValue = if (isVisible) 1f else 0f,
-        animationSpec = tween(durationMillis = 1000), label = ""
+    val rotationAnim by animateFloatAsState(
+        targetValue = if (isVisible) 360f else 0f,
+        animationSpec = tween(durationMillis = 800),
+        label = stringResource(R.string.rotation)
     )
-
+    val alphaAnim by animateFloatAsState(
+        targetValue = when {
+            isVisible && rotationAnim < 360f -> 0.5f
+            isVisible -> 1f
+            else -> 0f
+        },
+        animationSpec = tween(durationMillis = 1200),
+        label = stringResource(R.string.alpha)
+    )
     val scaleAnim by animateFloatAsState(
         targetValue = if (isVisible) 1f else 0.8f,
-        animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing), label = ""
+        animationSpec = tween(durationMillis = 1000, easing = FastOutSlowInEasing),
+        label = "scale"
+    )
+    var startFadeOut by remember { mutableStateOf(false) }
+    val fadeOutAlpha by animateFloatAsState(
+        targetValue = if (startFadeOut) 0f else 1f,
+        animationSpec = tween(durationMillis = 400),
+        label = "fadeOut"
     )
 
     LaunchedEffect(Unit) {
+        vm.fetchUser()
         isVisible = true
-        val patient: Patient? = preferencesHelper.fetchPatient()
-        val dentist: Dentist? = preferencesHelper.fetchDentist()
-        delay(2000)
+        delay(1800)
+
+        startFadeOut = true
+        delay(400)
 
         when {
             patient?.id != null -> {
-                AppProviders.patient = patient
                 activity?.startActivity(Intent(context, PatientMainActivity::class.java))
                 activity?.finish()
             }
 
             dentist?.id != null -> {
-                AppProviders.dentist = dentist
                 activity?.startActivity(Intent(context, DentistMainActivity::class.java))
                 activity?.finish()
             }
 
-            !preferencesHelper.fetchBoolean(PreferencesHelper.SHOW_INTRO) ->
-                navController.navigate(MainScreens.SelectUserType.route) {
-                    popUpTo(MainScreens.Splash.route) { inclusive = true }
-                }
-
-            else -> navController.navigate(MainScreens.Intro.route) {
+            else -> navController.navigate(MainScreens.SelectUserType.route) {
                 popUpTo(MainScreens.Splash.route) { inclusive = true }
             }
         }
@@ -96,7 +106,11 @@ fun SplashScreen(
             modifier = Modifier
                 .fillMaxSize(0.4f)
                 .scale(scaleAnim)
-                .alpha(alphaAnim)
+                .alpha(alphaAnim * fadeOutAlpha)
+                .graphicsLayer {
+                    rotationY = rotationAnim
+                    cameraDistance = 8 * density
+                }
         )
     }
 }

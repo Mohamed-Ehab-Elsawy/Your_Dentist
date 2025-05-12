@@ -1,8 +1,14 @@
 package com.nca.yourdentist.presentation.screens.patient
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nca.yourdentist.R
@@ -32,10 +40,11 @@ import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.network.NetworkMonitor
 import com.nca.yourdentist.navigation.PatientNavGraph
 import com.nca.yourdentist.navigation.PatientScreens
+import com.nca.yourdentist.notification.ReminderScheduler
 import com.nca.yourdentist.presentation.component.ui.NoInternetDialog
 import com.nca.yourdentist.presentation.component.ui.theme.MyAppTheme
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
-import com.nca.yourdentist.utils.BottomNavItem
+import com.nca.yourdentist.presentation.utils.BottomNavItem
 import com.nca.yourdentist.utils.updateBaseContextLocale
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
@@ -45,8 +54,10 @@ class PatientMainActivity : AppCompatActivity() {
     private val networkMonitor: NetworkMonitor by inject()
     private val preferencesHelper: PreferencesHelper by inject()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestNotificationPermission()
         setContent {
             val navController = rememberNavController()
             var isConnected by remember { mutableStateOf(true) }
@@ -64,8 +75,8 @@ class PatientMainActivity : AppCompatActivity() {
                 BottomNavItem(
                     name = stringResource(R.string.records),
                     route = PatientScreens.Records.route,
-                    unselectedIcon = ImageVector.vectorResource(R.drawable.ic_record_history_line),
-                    selectedIcon = ImageVector.vectorResource(R.drawable.ic_record_history_fill)
+                    unselectedIcon = ImageVector.vectorResource(R.drawable.ic_reports_history_line),
+                    selectedIcon = ImageVector.vectorResource(R.drawable.ic_reports_fill)
                 ),
                 BottomNavItem(
                     name = stringResource(R.string.notifications),
@@ -147,7 +158,41 @@ class PatientMainActivity : AppCompatActivity() {
         super.attachBaseContext(context)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1001 && grantResults.isNotEmpty()) {
+            val isGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+            preferencesHelper.putBoolean(PreferencesHelper.NOTIFICATION_ENABLED, isGranted)
+            if (isGranted) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                    startActivity(intent)
+                }
+                ReminderScheduler.scheduleReminder(this)
+            }
+        }
+    }
+
     private fun getSavedLanguage(): String {
         return preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
     }
 }

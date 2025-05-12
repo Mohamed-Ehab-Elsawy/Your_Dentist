@@ -33,20 +33,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.rememberPagerState
 import com.nca.yourdentist.R
 import com.nca.yourdentist.navigation.PatientScreens
-import com.nca.yourdentist.presentation.component.ui.ProgressIndicator
+import com.nca.yourdentist.presentation.component.ui.ProgressDialog
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
-import com.nca.yourdentist.presentation.screens.patient.home.components.ImagePager
-import com.nca.yourdentist.presentation.screens.patient.home.components.QRCodeDialog
-import com.nca.yourdentist.presentation.screens.patient.home.components.WelcomeSection
-import com.nca.yourdentist.utils.AppProviders
-import com.nca.yourdentist.utils.UiState
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.nca.yourdentist.presentation.screens.patient.home.home_components.PagerSection
+import com.nca.yourdentist.presentation.screens.patient.home.home_components.QRCodeDialog
+import com.nca.yourdentist.presentation.screens.patient.home.home_components.WelcomeSection
+import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.UiState
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -55,36 +52,13 @@ fun PatientHomeScreen(
     navController: NavController, viewModel: PatientHomeViewModel = koinViewModel()
 ) {
 
-    val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-    val pagerState = rememberPagerState(initialPage = 0)
-    val scope = rememberCoroutineScope()
+    val uiState by viewModel.uiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
-    // State to control the dialog visibility
     var showDialog by remember { mutableStateOf(false) }
 
-    val images = listOf(
-        R.drawable.img_xray,
-        R.drawable.img_questionnaire,
-        R.drawable.img_examination
-    )
-
-    val hints = listOf(
-        stringResource(R.string.easily_analyze_your_x_ray_and_get_a_detailed_report),
-        stringResource(R.string.answer_a_quick_questionnaire_to_help_us_better_understand_your_condition),
-        stringResource(R.string.book_a_specialist_dentist_to_start_treatment_the_fastest_way)
-    )
-
     LaunchedEffect(Unit) { viewModel.fetchQRCodeBitmap() }
-    LaunchedEffect(pagerState) {
-        while (true) {
-            delay(3000)
-            scope.launch {
-                val nextPage = (pagerState.currentPage + 1) % images.size
-                pagerState.animateScrollToPage(nextPage)
-            }
-        }
-    }
 
     Scaffold(
         topBar = {
@@ -114,11 +88,7 @@ fun PatientHomeScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                ImagePager(
-                    images = images,
-                    hints = hints,
-                    pagerState = pagerState
-                )
+                PagerSection()
 
                 Spacer(Modifier.height(32.dp))
 
@@ -162,7 +132,7 @@ fun PatientHomeScreen(
     }
 
     when (uiState) {
-        is UiState.Loading -> ProgressIndicator()
+        is UiState.Loading -> ProgressDialog()
 
         is UiState.Success -> {
             val patientQrCodeBitmap = (uiState as UiState.Success<Bitmap>).data

@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.nca.yourdentist.data.local.PreferencesHelper
-import com.nca.yourdentist.utils.Constant
+import com.nca.yourdentist.data.local.utils.PreferenceKeys
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -18,7 +18,7 @@ val sharedPreferencesModule = module {
 
         EncryptedSharedPreferences.create(
             context,
-            Constant.SHARED_PREFERENCE_KEY,
+            PreferenceKeys.SHARED_PREFERENCE_KEY,
             masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM

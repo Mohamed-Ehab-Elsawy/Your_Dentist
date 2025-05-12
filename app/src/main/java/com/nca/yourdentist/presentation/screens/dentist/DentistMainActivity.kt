@@ -1,8 +1,12 @@
 package com.nca.yourdentist.presentation.screens.dentist
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,16 +26,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.nca.yourdentist.R
 import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.network.NetworkMonitor
+import com.nca.yourdentist.navigation.DentistNavGraph
 import com.nca.yourdentist.navigation.DentistScreens
-import com.nca.yourdentist.navigation.PatientNavGraph
 import com.nca.yourdentist.presentation.component.ui.theme.MyAppTheme
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
-import com.nca.yourdentist.utils.BottomNavItem
+import com.nca.yourdentist.presentation.utils.BottomNavItem
 import com.nca.yourdentist.utils.updateBaseContextLocale
 import org.koin.android.ext.android.inject
 import java.util.Locale
@@ -41,8 +47,11 @@ class DentistMainActivity : AppCompatActivity() {
     private val networkMonitor: NetworkMonitor by inject()
     private val preferencesHelper: PreferencesHelper by inject()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requestNotificationPermission()
+
         setContent {
             val bottomNavItems = listOf(
                 BottomNavItem(
@@ -117,7 +126,7 @@ class DentistMainActivity : AppCompatActivity() {
                             .padding(paddingValues)
                             .fillMaxSize()
                     ) {
-                        PatientNavGraph(navController = navController)
+                        DentistNavGraph(navController = navController)
                     }
                 }
             }
@@ -130,7 +139,34 @@ class DentistMainActivity : AppCompatActivity() {
         super.attachBaseContext(context)
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == 1001 && grantResults.isNotEmpty()) {
+            val isGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
+            preferencesHelper.putBoolean(PreferencesHelper.NOTIFICATION_ENABLED, isGranted)
+        }
+    }
+
     private fun getSavedLanguage(): String {
         return preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
     }
 }

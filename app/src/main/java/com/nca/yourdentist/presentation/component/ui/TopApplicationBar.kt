@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,7 +24,7 @@ import com.nca.yourdentist.presentation.component.ui.theme.surfaceContainerLight
 @Composable
 fun TopApplicationBar(
     title: String,
-    iconRes: Int? = null,
+    icon: ImageVector? = null,
     iconTint: Color? = null,
     onIconClick: (() -> Unit)? = null
 ) {
@@ -47,15 +47,15 @@ fun TopApplicationBar(
                 color = primaryLight,
                 modifier = Modifier.align(Alignment.Center)
             )
-            if (iconRes != null && iconTint != null && onIconClick != null)
+            if (icon != null && iconTint != null && onIconClick != null)
                 IconButton(
                     onClick = onIconClick,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
-                        .padding(start = 16.dp)
+                        .padding(start = 8.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = iconRes),
+                        imageVector = icon,
                         contentDescription = null,
                         tint = iconTint,
                         modifier = Modifier.size(32.dp)

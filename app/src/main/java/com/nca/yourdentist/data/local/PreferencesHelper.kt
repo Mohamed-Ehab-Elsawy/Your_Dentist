@@ -7,8 +7,8 @@ import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
 import com.google.gson.Gson
-import com.nca.yourdentist.data.model.Dentist
-import com.nca.yourdentist.data.model.Patient
+import com.nca.yourdentist.data.models.users.Dentist
+import com.nca.yourdentist.data.models.users.Patient
 import java.io.ByteArrayOutputStream
 
 class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
@@ -20,6 +20,7 @@ class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
         const val SHOW_INTRO = "show intro"
         const val CURRENT_LANGUAGE = "current language"
         const val QR_CODE = "qr code: "
+        const val NOTIFICATION_ENABLED = "notification enabled"
     }
 
     private val gson = Gson()
@@ -96,7 +97,7 @@ class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
 
     fun clearData() {
         sharedPreferences.edit {
-            val qrCodeKey = QR_CODE + fetchPatient().id!!
+            val qrCodeKey = QR_CODE + fetchPatient().id
             clearString(qrCodeKey)
             clearString(PATIENT)
             clearString(DENTIST)

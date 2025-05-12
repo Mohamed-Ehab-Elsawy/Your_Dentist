@@ -3,8 +3,8 @@ package com.nca.yourdentist.presentation.screens.common.auth.forget_password
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nca.yourdentist.domain.usecase.auth.ForgetPasswordUseCase
-import com.nca.yourdentist.utils.UiState
+import com.nca.yourdentist.domain.remote.usecase.auth.ForgetPasswordUseCase
+import com.nca.yourdentist.presentation.utils.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
