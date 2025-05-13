@@ -4,7 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nca.yourdentist.data.models.Appointment
 import com.nca.yourdentist.data.models.users.Dentist
-import com.nca.yourdentist.data.remote.ApiConstants
+import com.nca.yourdentist.data.remote.FirebaseConstants
 import com.nca.yourdentist.domain.models.AppointmentBookResponse
 import com.nca.yourdentist.domain.models.AppointmentStatus
 import com.nca.yourdentist.domain.remote.repository.BookingRepository
@@ -13,7 +13,7 @@ import kotlinx.coroutines.tasks.await
 class BookingRepositoryImpl(
     firestore: FirebaseFirestore
 ) : BookingRepository {
-    private val dentistCollection = firestore.collection(ApiConstants.DENTIST_COLLECTIONS)
+    private val dentistCollection = firestore.collection(FirebaseConstants.DENTIST_COLLECTIONS)
 
     override suspend fun fetchDentists(
         selectedCity: Int,
@@ -42,8 +42,8 @@ class BookingRepositoryImpl(
         try {
             val snapshot =
                 dentistCollection.document(dentistId)
-                    .collection(ApiConstants.APPOINTMENTS)
-                    .orderBy(ApiConstants.TIMESTAMP).get().await()
+                    .collection(FirebaseConstants.APPOINTMENTS)
+                    .orderBy(FirebaseConstants.TIMESTAMP).get().await()
             val appointments = snapshot.documents.mapNotNull {
                 it.toObject(Appointment::class.java)?.copy(id = it.id)
             }
@@ -55,7 +55,7 @@ class BookingRepositoryImpl(
     override suspend fun bookAppointment(appointment: Appointment): Result<String> = try {
         val appointmentRef = dentistCollection
             .document(appointment.dentistId!!)
-            .collection(ApiConstants.APPOINTMENTS)
+            .collection(FirebaseConstants.APPOINTMENTS)
             .document(appointment.id!!)
 
         val snapshot = appointmentRef.get().await()
@@ -85,7 +85,7 @@ class BookingRepositoryImpl(
     override suspend fun fetchDentistAppointments(dentistId: String): Result<List<Appointment>> {
         try {
             val appointmentsCollection = dentistCollection.document(dentistId)
-                .collection(ApiConstants.APPOINTMENTS)
+                .collection(FirebaseConstants.APPOINTMENTS)
 
             val querySnapshot = appointmentsCollection.get().await()
             Log.e("FirestoreQuery", "Documents found: ${querySnapshot.documents.size}")

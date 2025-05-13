@@ -1,6 +1,6 @@
 package com.nca.yourdentist.data.remote
 
-object ApiConstants {
+object FirebaseConstants {
     const val PATIENT = "patient"
     const val PATIENT_COLLECTIONS = "Patients"
     const val PATIENTS_QR_CODES_STORAGE = "patients_qr_codes"

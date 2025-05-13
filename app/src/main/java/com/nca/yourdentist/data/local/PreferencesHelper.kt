@@ -14,10 +14,10 @@ import java.io.ByteArrayOutputStream
 class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
 
     companion object {
-        const val TAG = "PreferencesHelper"
+        const val TAG = "Preferences Helper"
         const val PATIENT = "patient"
         const val DENTIST = "dentist"
-        const val SHOW_INTRO = "show intro"
+        const val REMINDER_STATE = "reminder state"
         const val CURRENT_LANGUAGE = "current language"
         const val QR_CODE = "qr code: "
         const val NOTIFICATION_ENABLED = "notification enabled"

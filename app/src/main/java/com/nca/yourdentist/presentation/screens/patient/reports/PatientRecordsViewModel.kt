@@ -2,7 +2,6 @@ package com.nca.yourdentist.presentation.screens.patient.reports
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.Report
 import com.nca.yourdentist.domain.remote.usecase.reports.AddReportUseCase
 import com.nca.yourdentist.domain.remote.usecase.reports.DeleteReportUseCase
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class PatientRecordsViewModel(
-    private val preferencesHelper: PreferencesHelper,
     private val addReportUseCase: AddReportUseCase,
     private val fetchReportsUseCase: FetchReportsUseCase,
     private val updateReportUseCase: UpdateReportUseCase,

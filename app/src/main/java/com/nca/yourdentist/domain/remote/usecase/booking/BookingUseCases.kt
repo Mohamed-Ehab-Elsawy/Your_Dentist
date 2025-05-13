@@ -3,7 +3,7 @@ package com.nca.yourdentist.domain.remote.usecase.booking
 import com.nca.yourdentist.data.models.Appointment
 import com.nca.yourdentist.domain.remote.repository.BookingRepository
 
-class FetchDentistUseCase(private val bookingRepository: BookingRepository) {
+class FetchRemoteDentistsUseCase(private val bookingRepository: BookingRepository) {
     suspend operator fun invoke(selectedCity: Int, selectedArea: Int) =
         bookingRepository.fetchDentists(selectedCity, selectedArea)
 }

@@ -215,12 +215,11 @@ fun PatientLoginScreen(
         is UiState.Loading -> ProgressDialog()
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                if (AppProviders.patient != null) {
-                    activity?.startActivity(
-                        Intent(context, PatientMainActivity::class.java)
-                    )
-                    activity?.finish()
-                }
+                if (AppProviders.patient != null)
+                    activity?.apply {
+                        startActivity(Intent(context, PatientMainActivity::class.java))
+                        finish()
+                    }
             }
         }
 

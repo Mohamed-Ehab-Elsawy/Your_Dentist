@@ -22,25 +22,25 @@ import org.koin.dsl.module
 
 val viewModelModule = module {
     // Common
-    viewModel { SplashViewModel(get()) }
-    viewModel { SelectTypeViewModel(get()) }
-    viewModel { PatientLoginViewModel(get(), get(), get()) }
+    viewModel { SplashViewModel(get(), get()) }
+    viewModel { SelectTypeViewModel(get(), get()) }
+    viewModel { PatientLoginViewModel(get(), get(), get(), get()) }
     viewModel { ForgetPasswordViewModel(get()) }
-    viewModel { CompleteProfileViewModel(get(), get()) }
-    viewModel { PatientSignupViewModel(get(), get()) }
-    viewModel { DentistLoginViewModel(get(), get()) }
+    viewModel { CompleteProfileViewModel(get()) }
+    viewModel { PatientSignupViewModel(get()) }
+    viewModel { DentistLoginViewModel(get(), get(), get()) }
 
     //Patient
-    viewModel { PatientHomeViewModel(get(), get()) }
-    viewModel { ExaminationViewModel(get()) }
+    viewModel { PatientHomeViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { ExaminationViewModel() }
     viewModel { SelectDentistViewModel(get(), get()) }
-    viewModel { BookAppointmentViewModel(get(), get(), get()) }
-    viewModel { PatientNotificationViewModel(get(), get(), get(), get(), get()) }
-    viewModel { PatientRecordsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { PatientSettingsViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { BookAppointmentViewModel(get(), get()) }
+    viewModel { PatientNotificationViewModel(get(), get(), get(), get()) }
+    viewModel { PatientRecordsViewModel(get(), get(), get(), get()) }
+    viewModel { PatientSettingsViewModel(get(), get(), get(), get(), get(), get()) }
 
     //Dentist
-    viewModel { DentistHomeViewModel(get(), get()) }
-    viewModel { DentistNotificationViewModel(get(), get(), get(), get(), get()) }
-    viewModel { DentistSettingsViewModel(get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { DentistHomeViewModel(get()) }
+    viewModel { DentistNotificationViewModel(get(), get(), get(), get()) }
+    viewModel { DentistSettingsViewModel(get(), get(), get(), get(), get(), get()) }
 }

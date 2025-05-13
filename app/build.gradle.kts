@@ -94,7 +94,7 @@ dependencies {
     implementation(libs.zxing.core)
     implementation(libs.barcode.scanning)
 
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
+    implementation(libs.accompanist.swiperefresh)
 
 
     implementation(libs.androidx.ui.text.google.fonts)
@@ -103,6 +103,7 @@ dependencies {
     implementation(libs.accompanist.pager)
 
     implementation(libs.material)
+    implementation(libs.androidx.work.runtime.ktx)
 
 
     // Testing dependencies

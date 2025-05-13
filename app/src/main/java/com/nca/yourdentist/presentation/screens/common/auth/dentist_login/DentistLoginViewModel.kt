@@ -4,8 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.requests.AuthRequest
+import com.nca.yourdentist.domain.local.usecase.FetchCurrentLanguageUseCase
+import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.presentation.utils.AppProviders
 import com.nca.yourdentist.presentation.utils.UiState
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 
 class DentistLoginViewModel(
     private val useCase: SignInWithEmailUseCase,
-    private val preferencesHelper: PreferencesHelper
+    private val fetchCurrentLanguage: FetchCurrentLanguageUseCase,
+    private val putCurrentLanguage: PutCurrentLanguageUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Idle)
@@ -42,7 +44,6 @@ class DentistLoginViewModel(
                 val result = useCase.invoke(request, isDentist = true)
                 result.onSuccess { user ->
                     if (user != null && AppProviders.dentist?.type == Constant.DENTIST) {
-                        preferencesHelper.putDentist(AppProviders.dentist!!)
                         _uiState.value = UiState.Success(user)
                     } else {
                         _uiState.value =
@@ -57,12 +58,11 @@ class DentistLoginViewModel(
     }
 
     fun changeLanguage() {
-        val currentLanguage = preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+        val currentLanguage = fetchCurrentLanguage.invoke()
         val newLanguage =
             if (currentLanguage == LanguageConstants.ENGLISH) LanguageConstants.ARABIC
             else LanguageConstants.ENGLISH
-
-        preferencesHelper.putString(PreferencesHelper.CURRENT_LANGUAGE, newLanguage)
+        putCurrentLanguage.invoke(newLanguage)
     }
 
     fun onEmailChange(newEmail: String) {

@@ -12,7 +12,7 @@ import com.nca.yourdentist.domain.remote.usecase.auth.UploadQRCodeUseCase
 import com.nca.yourdentist.domain.remote.usecase.booking.BookAppointmentUseCase
 import com.nca.yourdentist.domain.remote.usecase.booking.FetchAvailableAppointmentsUseCase
 import com.nca.yourdentist.domain.remote.usecase.booking.FetchDentistAppointmentsUseCase
-import com.nca.yourdentist.domain.remote.usecase.booking.FetchDentistUseCase
+import com.nca.yourdentist.domain.remote.usecase.booking.FetchRemoteDentistsUseCase
 import com.nca.yourdentist.domain.remote.usecase.notification.AddNotificationUseCase
 import com.nca.yourdentist.domain.remote.usecase.notification.DeleteNotificationUseCase
 import com.nca.yourdentist.domain.remote.usecase.notification.FetchNotificationsUseCase
@@ -38,7 +38,7 @@ val authUseCaseModule = module {
 }
 
 val bookingUseCaseModule = module {
-    factory { FetchDentistUseCase(get<BookingRepository>()) }
+    factory { FetchRemoteDentistsUseCase(get<BookingRepository>()) }
     factory { FetchAvailableAppointmentsUseCase(get<BookingRepository>()) }
     factory { BookAppointmentUseCase(get<BookingRepository>()) }
     factory { FetchDentistAppointmentsUseCase(get<BookingRepository>()) }

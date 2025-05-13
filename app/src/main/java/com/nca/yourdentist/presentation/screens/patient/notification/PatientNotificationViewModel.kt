@@ -2,7 +2,6 @@ package com.nca.yourdentist.presentation.screens.patient.notification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.AppNotification
 import com.nca.yourdentist.domain.remote.usecase.notification.AddNotificationUseCase
 import com.nca.yourdentist.domain.remote.usecase.notification.DeleteNotificationUseCase
@@ -17,7 +16,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class PatientNotificationViewModel(
-    private val preferencesHelper: PreferencesHelper,
     private val addNotificationUseCase: AddNotificationUseCase,
     private val updateNotificationUseCase: UpdateNotificationUseCase,
     private val deleteNotificationUseCase: DeleteNotificationUseCase,

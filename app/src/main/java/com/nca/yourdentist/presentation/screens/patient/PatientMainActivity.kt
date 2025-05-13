@@ -2,11 +2,10 @@ package com.nca.yourdentist.presentation.screens.patient
 
 import android.Manifest
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -40,7 +39,6 @@ import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.network.NetworkMonitor
 import com.nca.yourdentist.navigation.PatientNavGraph
 import com.nca.yourdentist.navigation.PatientScreens
-import com.nca.yourdentist.notification.ReminderScheduler
 import com.nca.yourdentist.presentation.component.ui.NoInternetDialog
 import com.nca.yourdentist.presentation.component.ui.theme.MyAppTheme
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
@@ -168,12 +166,9 @@ class PatientMainActivity : AppCompatActivity() {
         if (requestCode == 1001 && grantResults.isNotEmpty()) {
             val isGranted = grantResults[0] == PackageManager.PERMISSION_GRANTED
             preferencesHelper.putBoolean(PreferencesHelper.NOTIFICATION_ENABLED, isGranted)
-            if (isGranted) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                    val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
-                    startActivity(intent)
-                }
-                ReminderScheduler.scheduleReminder(this)
+            if (!isGranted) {
+                Toast.makeText(this, "Notifications and Reminders are disabled", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }

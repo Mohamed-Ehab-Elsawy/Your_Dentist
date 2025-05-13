@@ -3,17 +3,17 @@ package com.nca.yourdentist.presentation.screens.patient.home.appointment.select
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.users.Dentist
-import com.nca.yourdentist.domain.remote.usecase.booking.FetchDentistUseCase
+import com.nca.yourdentist.domain.local.usecase.FetchCurrentLanguageUseCase
+import com.nca.yourdentist.domain.remote.usecase.booking.FetchRemoteDentistsUseCase
 import com.nca.yourdentist.presentation.utils.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class SelectDentistViewModel(
-    private val preferencesHelper: PreferencesHelper,
-    private val fetchDentist: FetchDentistUseCase
+    private val fetchCurrentLanguage: FetchCurrentLanguageUseCase,
+    private val fetchDentists: FetchRemoteDentistsUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Dentist>>>(UiState.Idle)
@@ -28,13 +28,11 @@ class SelectDentistViewModel(
         _uiState.value = UiState.Loading
         try {
             viewModelScope.launch {
-                val dentists = fetchDentist.invoke(selectedCity.intValue, selectedArea.intValue)
+                val dentists = fetchDentists.invoke(selectedCity.intValue, selectedArea.intValue)
                 dentists.onSuccess {
-                    if (it.isNotEmpty())
-                        _uiState.value = UiState.Success(it)
-                    else
-                        _uiState.value =
-                            UiState.Error(Throwable(message = "No Dentists in this area"))
+                    if (it.isNotEmpty()) _uiState.value = UiState.Success(it)
+                    else _uiState.value =
+                        UiState.Error(Throwable(message = "No Dentists in this area"))
                 }
                 dentists.onFailure { t ->
                     _uiState.value = UiState.Error(t)
@@ -55,6 +53,6 @@ class SelectDentistViewModel(
         fetchDentist()
     }
 
-    fun activeLanguage(): String = preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
+    fun activeLanguage(): String = fetchCurrentLanguage.invoke()
 
 }

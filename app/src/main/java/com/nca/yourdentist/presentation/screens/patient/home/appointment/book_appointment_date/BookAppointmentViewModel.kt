@@ -3,7 +3,6 @@ package com.nca.yourdentist.presentation.screens.patient.home.appointment.book_a
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.Appointment
 import com.nca.yourdentist.domain.models.AppointmentStatus
 import com.nca.yourdentist.domain.remote.usecase.booking.BookAppointmentUseCase
@@ -15,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class BookAppointmentViewModel(
-    private val preferencesHelper: PreferencesHelper,
     private val fetchAppointments: FetchAvailableAppointmentsUseCase,
     private val bookAppointment: BookAppointmentUseCase
 ) : ViewModel() {

@@ -9,11 +9,11 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.FirebaseUser
-import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.requests.AuthRequest
+import com.nca.yourdentist.domain.local.usecase.FetchCurrentLanguageUseCase
+import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithGoogleUseCase
-import com.nca.yourdentist.presentation.utils.AppProviders
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.LanguageConstants
@@ -24,7 +24,8 @@ import kotlinx.coroutines.launch
 class PatientLoginViewModel(
     private val signInWithEmailUseCase: SignInWithEmailUseCase,
     private val googleSignInUseCase: SignInWithGoogleUseCase,
-    private val preferencesHelper: PreferencesHelper
+    private val fetchCurrentLanguage: FetchCurrentLanguageUseCase,
+    private val putCurrentLanguage: PutCurrentLanguageUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<FirebaseUser>>(UiState.Idle)
@@ -48,13 +49,9 @@ class PatientLoginViewModel(
                 val request = AuthRequest(email.value, password.value)
                 val result = signInWithEmailUseCase.invoke(request, isDentist = false)
                 result.onSuccess { user ->
-                    if (user != null && AppProviders.patient?.type == Constant.PATIENT) {
-                        preferencesHelper.putPatient(AppProviders.patient!!)
-                        _uiState.value = UiState.Success(user)
-                    } else {
-                        _uiState.value =
-                            UiState.Error(t = Throwable(message = Constant.USER_TYPE_ERROR))
-                    }
+                    if (user != null) _uiState.value = UiState.Success(user)
+                    else _uiState.value =
+                        UiState.Error(t = Throwable(message = Constant.USER_TYPE_ERROR))
                 }
                 result.onFailure { _uiState.value = UiState.Error(it) }
             } catch (t: Throwable) {
@@ -68,27 +65,19 @@ class PatientLoginViewModel(
         viewModelScope.launch {
             try {
                 val credentialManager = CredentialManager.create(context)
-                val googleIdOption = GetGoogleIdOption.Builder()
-                    .setFilterByAuthorizedAccounts(false)
-                    .setServerClientId(serverClientId)
-                    .build()
-                val request = GetCredentialRequest.Builder()
-                    .addCredentialOption(googleIdOption)
-                    .build()
+                val googleIdOption =
+                    GetGoogleIdOption.Builder().setFilterByAuthorizedAccounts(false)
+                        .setServerClientId(serverClientId).build()
+                val request =
+                    GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build()
 
                 val credentialResponse = credentialManager.getCredential(context, request)
                 val googleIdTokenCredential =
                     GoogleIdTokenCredential.createFrom(credentialResponse.credential.data)
 
-                googleSignInUseCase.invoke(googleIdTokenCredential.idToken)
-                    .onSuccess { user ->
-                        preferencesHelper.putPatient(AppProviders.patient!!)
-                        _uiState.value = UiState.Success(user!!)
-                    }
-                    .onFailure { t ->
-                        _uiState.value = UiState.Error(t)
-                    }
-
+                val result = googleSignInUseCase.invoke(googleIdTokenCredential.idToken)
+                result.onSuccess { user -> _uiState.value = UiState.Success(user!!) }
+                result.onFailure { t -> _uiState.value = UiState.Error(t) }
             } catch (t: Throwable) {
                 _uiState.value = UiState.Error(t)
             }
@@ -96,12 +85,11 @@ class PatientLoginViewModel(
     }
 
     fun changeLanguage() {
-        val currentLanguage = preferencesHelper.fetchString(PreferencesHelper.CURRENT_LANGUAGE)
-        val newLanguage =
-            if (currentLanguage == LanguageConstants.ENGLISH) LanguageConstants.ARABIC
-            else LanguageConstants.ENGLISH
+        val currentLanguage = fetchCurrentLanguage.invoke()
+        val newLanguage = if (currentLanguage == LanguageConstants.ENGLISH) LanguageConstants.ARABIC
+        else LanguageConstants.ENGLISH
 
-        preferencesHelper.putString(PreferencesHelper.CURRENT_LANGUAGE, newLanguage)
+        putCurrentLanguage.invoke(newLanguage)
     }
 
     fun onEmailChange(newEmail: String) {

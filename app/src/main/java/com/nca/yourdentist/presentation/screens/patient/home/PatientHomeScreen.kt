@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +41,8 @@ import com.nca.yourdentist.navigation.PatientScreens
 import com.nca.yourdentist.presentation.component.ui.ProgressDialog
 import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
+import com.nca.yourdentist.presentation.component.ui.theme.errorContainerLight
+import com.nca.yourdentist.presentation.component.ui.theme.onErrorContainerLight
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.screens.patient.home.home_components.PagerSection
 import com.nca.yourdentist.presentation.screens.patient.home.home_components.QRCodeDialog
@@ -49,21 +54,33 @@ import org.koin.androidx.compose.koinViewModel
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun PatientHomeScreen(
-    navController: NavController, viewModel: PatientHomeViewModel = koinViewModel()
+    navController: NavController, vm: PatientHomeViewModel = koinViewModel()
 ) {
 
     val context = LocalContext.current
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by vm.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-
+    val snackBarHostState = remember { SnackbarHostState() }
     var showDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) { viewModel.fetchQRCodeBitmap() }
+    LaunchedEffect(Unit) {
+        vm.fetchQRCodeBitmap()
+        vm.scheduleToothbrushReminder()
+    }
 
     Scaffold(
         topBar = {
             TopApplicationBar(title = stringResource(R.string.home))
-        }) { paddingValues ->
+        }, snackbarHost = {
+            SnackbarHost(hostState = snackBarHostState) { data ->
+                Snackbar(
+                    snackbarData = data,
+                    containerColor = errorContainerLight,
+                    contentColor = onErrorContainerLight
+                )
+            }
+        }
+    ) { paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
@@ -98,8 +115,7 @@ fun PatientHomeScreen(
                         .height(200.dp)
                         .clickable {
                             navController.navigate(PatientScreens.UploadImage.route)
-                        }
-                ) {
+                        }) {
                     Image(
                         painter = painterResource(R.drawable.img_home),
                         contentDescription = "home img",
@@ -114,18 +130,17 @@ fun PatientHomeScreen(
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth()
-                            .align(Alignment.TopStart), color = onPrimaryLight
+                            .align(Alignment.TopStart),
+                        color = onPrimaryLight
                     )
                 }
 
                 // Dialog to preview the QR code
                 if (showDialog) {
-                    QRCodeDialog(
-                        onDismiss = { showDialog = false },
-                        putQrCode = {
-                            Log.e("YourDentist", "putQrCode: $it")
-                            viewModel.putQRCode(it)
-                        })
+                    QRCodeDialog(onDismiss = { showDialog = false }, putQrCode = {
+                        Log.e("YourDentist", "putQrCode: $it")
+                        vm.putQRCode(it)
+                    })
                 }
             }
         }
@@ -139,7 +154,12 @@ fun PatientHomeScreen(
             AppProviders.patientQRCodeBitmap = patientQrCodeBitmap
         }
 
-        is UiState.Error -> {}
+        is UiState.Error -> {
+            val errorMessage = (uiState as UiState.Error).t.localizedMessage
+            LaunchedEffect(Unit) {
+                snackBarHostState.showSnackbar(errorMessage ?: "")
+            }
+        }
 
         is UiState.Idle -> {}
     }

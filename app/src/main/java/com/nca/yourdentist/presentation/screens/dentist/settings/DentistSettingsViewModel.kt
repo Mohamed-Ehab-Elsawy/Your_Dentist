@@ -11,7 +11,6 @@ import com.nca.yourdentist.domain.local.usecase.LocalLogoutUseCase
 import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 import com.nca.yourdentist.domain.local.usecase.PutNotificationsEnabledUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.RemoteLogoutUseCase
-import com.nca.yourdentist.notification.NotificationManager
 import com.nca.yourdentist.presentation.utils.AppProviders
 import com.nca.yourdentist.utils.LanguageConstants
 import kotlinx.coroutines.launch
@@ -23,7 +22,6 @@ class DentistSettingsViewModel(
     private val setNotificationsEnabled: PutNotificationsEnabledUseCase,
     private val putCurrentLanguage: PutCurrentLanguageUseCase,
     private val localLogout: LocalLogoutUseCase,
-    private val notificationManager: NotificationManager
 ) : ViewModel() {
 
     private val currentLanguage = mutableStateOf(
@@ -40,9 +38,6 @@ class DentistSettingsViewModel(
     fun toggleNotifications() {
         _notificationsEnabled.value = !_notificationsEnabled.value
         setNotificationsEnabled.invoke(_notificationsEnabled.value)
-        if (!_notificationsEnabled.value) {
-            notificationManager.cancelAllNotifications()
-        }
     }
 
 

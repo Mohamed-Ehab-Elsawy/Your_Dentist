@@ -1,19 +1,15 @@
 package com.nca.yourdentist.presentation.screens.common.auth.select_type
 
 import androidx.lifecycle.ViewModel
-import com.nca.yourdentist.data.local.PreferencesHelper
-import com.nca.yourdentist.utils.Constant
-import com.nca.yourdentist.utils.LanguageConstants
+import com.nca.yourdentist.domain.local.usecase.FetchCurrentLanguageUseCase
+import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 
 class SelectTypeViewModel(
-    private val preferencesHelper: PreferencesHelper
+    private val fetchCurrentLanguage: FetchCurrentLanguageUseCase,
+    private val putCurrentLanguage: PutCurrentLanguageUseCase
 ) : ViewModel() {
-
     fun setUpAppLanguage() {
-        val language = preferencesHelper.fetchString(Constant.CURRENT_LANGUAGE)
-        if (language.isEmpty()) {
-            preferencesHelper.putString(Constant.CURRENT_LANGUAGE, LanguageConstants.ENGLISH)
-        }
+        val language = fetchCurrentLanguage.invoke()
+        if (language.isEmpty()) putCurrentLanguage.invoke(language)
     }
-
 }

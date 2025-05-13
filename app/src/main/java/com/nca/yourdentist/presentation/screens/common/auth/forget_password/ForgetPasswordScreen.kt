@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +46,7 @@ fun ForgetPasswordScreen(
     navController: NavController,
     viewModel: ForgetPasswordViewModel = koinViewModel()
 ) {
+    val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
@@ -113,13 +115,10 @@ fun ForgetPasswordScreen(
     }
 
     when (uiState) {
-        is UiState.Loading -> {
-            ProgressDialog()
-        }
-
+        is UiState.Idle -> {}
+        is UiState.Loading -> ProgressDialog()
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                val context = navController.context
                 Toast.makeText(
                     context,
                     context.getString(R.string.password_reset_email_sent),
@@ -129,6 +128,11 @@ fun ForgetPasswordScreen(
             }
         }
 
-        else -> {}
+        is UiState.Error -> {
+            LaunchedEffect(Unit) {
+                val errorMessage = (uiState as UiState.Error).t.localizedMessage
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

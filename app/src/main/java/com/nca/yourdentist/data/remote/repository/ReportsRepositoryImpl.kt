@@ -2,7 +2,7 @@ package com.nca.yourdentist.data.remote.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nca.yourdentist.data.models.Report
-import com.nca.yourdentist.data.remote.ApiConstants
+import com.nca.yourdentist.data.remote.FirebaseConstants
 import com.nca.yourdentist.domain.remote.repository.ReportsRepository
 import com.nca.yourdentist.presentation.utils.AppProviders
 import kotlinx.coroutines.tasks.await
@@ -12,8 +12,9 @@ class ReportsRepositoryImpl(
 ) : ReportsRepository {
 
     private val reportCollection =
-        firestore.collection(ApiConstants.PATIENT_COLLECTIONS).document(AppProviders.patient?.id!!)
-            .collection(ApiConstants.REPORTS)
+        firestore.collection(FirebaseConstants.PATIENT_COLLECTIONS)
+            .document(AppProviders.patient?.id!!)
+            .collection(FirebaseConstants.REPORTS)
 
     override suspend fun addReport(report: Report) {
         reportCollection.add(report).await()

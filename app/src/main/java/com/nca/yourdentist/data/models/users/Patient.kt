@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.nca.yourdentist.data.models.AppNotification
 import com.nca.yourdentist.data.models.Report
-import com.nca.yourdentist.data.remote.ApiConstants
+import com.nca.yourdentist.data.remote.FirebaseConstants
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -19,5 +19,5 @@ data class Patient(
     val qrCode: String? = null,
     val appNotifications: List<AppNotification> = listOf<AppNotification>(),
     val records: List<Report> = listOf<Report>(),
-    val type: String = ApiConstants.PATIENT
+    val type: String = FirebaseConstants.PATIENT
 ) : Parcelable
