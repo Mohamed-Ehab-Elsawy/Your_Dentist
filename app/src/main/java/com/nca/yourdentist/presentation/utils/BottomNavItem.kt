@@ -7,6 +7,5 @@ data class BottomNavItem(
     val route: String,
     val selectedIcon: ImageVector,
     val unselectedIcon: ImageVector,
-    val badgeEnabled: Boolean = false,
-    val badgeCount: Int = 0
+    val badgeEnabled: Boolean = false
 )

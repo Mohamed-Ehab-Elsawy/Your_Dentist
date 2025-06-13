@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.presentation.component.ui.ProgressDialog
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
+import com.nca.yourdentist.presentation.component.ui.customized.ProgressDialog
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.utils.UiState

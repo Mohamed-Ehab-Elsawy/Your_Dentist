@@ -21,11 +21,11 @@ fun PhoneTextField(
     errorText: String
 ) {
     OutlinedTextField(
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = { onValueChange.invoke(it) },
         maxLines = 1,
         label = { Text(stringResource(id = R.string.phone_number)) },
-        modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Phone,
             imeAction = ImeAction.Done

@@ -8,8 +8,9 @@ import java.util.UUID
 @Parcelize
 data class AppNotification(
     val id: String = UUID.randomUUID().toString(),
+    val createdAt: Timestamp = Timestamp.now(),
     val title: String = "",
     val body: String = "",
-    var isRead: Boolean = false,
-    val date: Timestamp = Timestamp.now()
+    var read: Boolean = false,
+    var notified: Boolean = false
 ) : Parcelable

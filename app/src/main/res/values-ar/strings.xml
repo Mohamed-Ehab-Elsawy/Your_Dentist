@@ -80,7 +80,7 @@
     <string name="complete_profile">إكمال الملف</string>
 
     <string name="questionnaire">إستبيان</string>
-    <string name="answer_the_following_questions">أجب الأسئلة التالية:</string>
+    <string name="answer_the_following_questions">إلى أن يتم الإنتهاء من تحليل الاشعة،أجب على الأسئلة التالية:</string>
     <string name="yes">نعــم</string>
     <string name="no">لا</string>
     <string name="question_1">هل تعاني من أي ألم عند شرب المشروبات الباردة أو تناول الحلويات؟</string>
@@ -159,7 +159,17 @@
     <string name="appointment_not_found">الموعد غير متاح</string>
     <string name="date_">التاريخ: </string>
     <string name="report">تقرير</string>
-    <string name="reports">تقاريرك</string>
+    <string name="your_reports">تقاريرك</string>
     <string name="today">اليوم</string>
     <string name="welcome_dr">أهلا دكتور</string>
+    <string name="no_appointments_today">لا مواعيد اليوم</string>
+    <string name="select_dentist">أختار دكتور</string>
+    <string name="patient_report">تقرير المريض</string>
+    <string name="notes">ملاحظات</string>
+    <string name="appointment_completed_already">الموعد اكتمل بالفعل</string>
+    <string name="upcoming_appointment">الموعد القادم</string>
+    <string name="complete_your_appointment_first">عندك موعد بالفعل</string>
+    <string name="book_now_description">"إذا كان لديك تسوس أو تشعر بألم في الأسنان، يجب أن تذهب إلى أحد أطبائنا الأسنان، فهم الأفضل في المدينة."</string>
+    <string name="submit_rating">Submit rating</string>
+    <string name="reports">Reports</string>
 </resources>

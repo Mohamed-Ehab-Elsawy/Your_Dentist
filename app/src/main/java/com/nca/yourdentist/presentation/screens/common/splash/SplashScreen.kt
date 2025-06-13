@@ -24,13 +24,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavController
+import com.nca.yourdentist.DentistActivity
+import com.nca.yourdentist.PatientActivity
 import com.nca.yourdentist.R
-import com.nca.yourdentist.navigation.MainScreens
+import com.nca.yourdentist.navigation.AuthScreens
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
-import com.nca.yourdentist.presentation.screens.dentist.DentistMainActivity
-import com.nca.yourdentist.presentation.screens.patient.PatientMainActivity
-import com.nca.yourdentist.presentation.utils.AppProviders.dentist
-import com.nca.yourdentist.presentation.utils.AppProviders.patient
+import com.nca.yourdentist.presentation.utils.Provider.dentist
+import com.nca.yourdentist.presentation.utils.Provider.patient
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
@@ -79,17 +79,17 @@ fun SplashScreen(
 
         when {
             patient?.id != null -> {
-                activity?.startActivity(Intent(context, PatientMainActivity::class.java))
+                activity?.startActivity(Intent(context, PatientActivity::class.java))
                 activity?.finish()
             }
 
             dentist?.id != null -> {
-                activity?.startActivity(Intent(context, DentistMainActivity::class.java))
+                activity?.startActivity(Intent(context, DentistActivity::class.java))
                 activity?.finish()
             }
 
-            else -> navController.navigate(MainScreens.SelectUserType.route) {
-                popUpTo(MainScreens.Splash.route) { inclusive = true }
+            else -> navController.navigate(AuthScreens.SelectUserType.route) {
+                popUpTo(AuthScreens.Splash.route) { inclusive = true }
             }
         }
     }

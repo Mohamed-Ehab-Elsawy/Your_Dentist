@@ -74,7 +74,7 @@
     <string name="slide_menu">slide menu</string>
     <string name="complete_profile">Complete Profile</string>
     <string name="questionnaire">Questionnaire</string>
-    <string name="answer_the_following_questions">Answer the following Questions:</string>
+    <string name="answer_the_following_questions">Until X-Ray analysis finish, Answer the following Questions:</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="question_1">Do you suffer from any pain with cold drinks or/and sweets?</string>
@@ -117,7 +117,7 @@
     <string name="submit">Submit</string>
     <string name="results">Results</string>
     <string name="uploaded_x_ray">Uploaded X-ray</string>
-    <string name="detected_caries">Detected Caries x-Ray</string>
+    <string name="detected_caries">Detected Caries X-Ray</string>
     <string name="city">City</string>
     <string name="area">Area</string>
     <string name="check_your_internet_connection">Check your internet connection</string>
@@ -150,12 +150,13 @@
     <string name="appointment_not_found">Sorry appointment not found.</string>
     <string name="date_">Date: </string>
     <string name="report">Report</string>
-    <string name="reports">Your Reports</string>
+    <string name="your_reports">Your Reports</string>
     <string name="today">Today</string>
     <string name="welcome_dr">Welcome DR.</string>
+    <string name="no_appointments_today">No appointments today</string>
+    <string name="select_dentist">Select Dentist</string>
 
     <!--    untranslatable string   -->
-    <string name="default_web_client_id" translatable="false">474536080159-g7jic9qi93djcqcp5692r7nusek7s2hq.apps.googleusercontent.com</string>
     <string name="view_x_ray" translatable="false">View X-ray</string>
     <string name="qr_code_preview" translatable="false">QR Code Preview</string>
     <string name="no_notifications_image" translatable="false">no notifications image</string>
@@ -179,7 +180,17 @@
     <string name="alpha" translatable="false">alpha</string>
     <string name="previous_week" translatable="false">Previous Week</string>
     <string name="next_week" translatable="false">Next Week</string>
-    <string name="no_appointments_today">No appointments today</string>
+    <string name="patient_report">Patient Report</string>
+    <string name="notes">Notes</string>
+    <string name="appointment_completed_already">Appointment completed already</string>
+    <string name="upcoming_appointment">Upcoming Appointment…</string>
+    <string name="complete_your_appointment_first">Complete your appointment first</string>
+    <string name="book_now_description">"If there is a caries or you have a tooth pain you should go to one of our dentist, They are the best in town"</string>
+    <string name="submit_rating">Submit rating</string>
+    <string name="reports">Reports</string>
+    <string name="choose_your_role">Choose your role</string>
+    <string name="welcome__">Welcome!</string>
+    <string name="tell_us_a_bit_about_yourself_to_get_started_with_our_dental_care_platform">Tell us a bit about yourself to get started with our dental care platform</string>
 
 
 </resources>

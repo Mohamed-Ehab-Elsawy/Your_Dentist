@@ -25,7 +25,7 @@ import androidx.navigation.NavController
 import com.nca.yourdentist.MainActivity
 import com.nca.yourdentist.R
 import com.nca.yourdentist.navigation.PatientScreens
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.customized.settingsButtons.AboutUsButton
 import com.nca.yourdentist.presentation.component.ui.customized.settingsButtons.ChangeLanguageButton
 import com.nca.yourdentist.presentation.component.ui.customized.settingsButtons.ContactUsButton

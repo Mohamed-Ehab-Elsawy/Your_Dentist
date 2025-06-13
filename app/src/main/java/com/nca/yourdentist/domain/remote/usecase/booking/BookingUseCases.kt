@@ -1,24 +1,29 @@
 package com.nca.yourdentist.domain.remote.usecase.booking
 
 import com.nca.yourdentist.data.models.Appointment
-import com.nca.yourdentist.domain.remote.repository.BookingRepository
+import com.nca.yourdentist.domain.remote.repository.AppointmentsRepository
 
-class FetchRemoteDentistsUseCase(private val bookingRepository: BookingRepository) {
+class FetchRemoteDentistsUseCase(private val appointmentsRepository: AppointmentsRepository) {
     suspend operator fun invoke(selectedCity: Int, selectedArea: Int) =
-        bookingRepository.fetchDentists(selectedCity, selectedArea)
+        appointmentsRepository.fetchDentists(selectedCity, selectedArea)
 }
 
-class FetchAvailableAppointmentsUseCase(private val bookingRepository: BookingRepository) {
+class FetchAvailableAppointmentsUseCase(private val appointmentsRepository: AppointmentsRepository) {
     suspend operator fun invoke(dentistId: String): Result<List<Appointment>> =
-        bookingRepository.fetchAvailableAppointments(dentistId)
+        appointmentsRepository.fetchAvailableAppointments(dentistId)
 }
 
-class BookAppointmentUseCase(private val bookingRepository: BookingRepository) {
+class BookAppointmentUseCase(private val appointmentsRepository: AppointmentsRepository) {
     suspend operator fun invoke(appointment: Appointment): Result<String> =
-        bookingRepository.bookAppointment(appointment)
+        appointmentsRepository.bookNewAppointment(appointment)
 }
 
-class FetchDentistAppointmentsUseCase(private val bookingRepository: BookingRepository) {
+class FetchDentistAppointmentsUseCase(private val appointmentsRepository: AppointmentsRepository) {
     suspend operator fun invoke(dentistId: String): Result<List<Appointment>> =
-        bookingRepository.fetchDentistAppointments(dentistId)
+        appointmentsRepository.fetchDentistAppointments(dentistId)
+}
+
+class UpdateAppointmentReportUseCase(private val appointmentsRepository: AppointmentsRepository) {
+    suspend operator fun invoke(appointment: Appointment, notes: String) =
+        appointmentsRepository.updateAppointmentReport(appointment = appointment, notes = notes)
 }

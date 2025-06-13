@@ -8,7 +8,7 @@ import com.nca.yourdentist.data.models.requests.AuthRequest
 import com.nca.yourdentist.domain.local.usecase.FetchCurrentLanguageUseCase
 import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithEmailUseCase
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.LanguageConstants
@@ -43,7 +43,7 @@ class DentistLoginViewModel(
                 val request = AuthRequest(email.value, password.value)
                 val result = useCase.invoke(request, isDentist = true)
                 result.onSuccess { user ->
-                    if (user != null && AppProviders.dentist?.type == Constant.DENTIST) {
+                    if (user != null && Provider.dentist?.type == Constant.DENTIST) {
                         _uiState.value = UiState.Success(user)
                     } else {
                         _uiState.value =

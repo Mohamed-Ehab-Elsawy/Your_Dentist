@@ -32,17 +32,16 @@
         android:roundIcon="@mipmap/ic_app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YourDentist"
-        android:usesCleartextTraffic="false"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.screens.dentist.DentistMainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
+            android:name=".DentistActivity"
+            android:exported="false"
+            android:theme="@style/Theme.YourDentist" />
         <activity
-            android:name=".presentation.screens.patient.PatientMainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Material3.Light.NoActionBar" />
-
+            android:name=".PatientActivity"
+            android:exported="false"
+            android:theme="@style/Theme.YourDentist" />
         <activity
             android:name=".MainActivity"
             android:exported="true">

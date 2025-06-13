@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.nca.yourdentist.data.models.requests.AuthRequest
 import com.nca.yourdentist.data.models.users.Patient
 import com.nca.yourdentist.domain.remote.usecase.auth.SignupUseCase
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -70,7 +70,7 @@ class PatientSignupViewModel(
                 val request = AuthRequest(email.value, password.value, patient)
                 val result = useCase.invoke(request)
                 result.onSuccess { user ->
-                    if (user != null && AppProviders.patient?.type == Constant.PATIENT) {
+                    if (user != null && Provider.patient?.type == Constant.PATIENT) {
                         _uiState.value = UiState.Success(user)
                     }
                 }

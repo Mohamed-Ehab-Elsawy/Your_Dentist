@@ -11,7 +11,7 @@ import com.nca.yourdentist.domain.local.usecase.LocalLogoutUseCase
 import com.nca.yourdentist.domain.local.usecase.PutCurrentLanguageUseCase
 import com.nca.yourdentist.domain.local.usecase.PutNotificationsEnabledUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.RemoteLogoutUseCase
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.utils.LanguageConstants
 import kotlinx.coroutines.launch
 
@@ -58,9 +58,9 @@ class DentistSettingsViewModel(
     }
 
     private fun resetProviders() {
-        AppProviders.dentist = null
-        AppProviders.patient = null
-        AppProviders.patientQRCodeBitmap = null
+        Provider.dentist = null
+        Provider.patient = null
+        Provider.patientQRCodeBitmap = null
         Log.e("DentistSettingsViewModel", "Reset providers")
     }
 }

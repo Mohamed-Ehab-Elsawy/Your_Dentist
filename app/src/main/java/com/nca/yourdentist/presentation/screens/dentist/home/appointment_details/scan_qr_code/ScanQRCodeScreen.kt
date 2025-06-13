@@ -40,7 +40,9 @@ fun ScanQRCodeScreen(navController: NavController) {
                 scannerPaused = true
                 if (id == result) {
                     Toast.makeText(context, result, Toast.LENGTH_SHORT).show()
-                    navController.navigate(DentistScreens.AppointmentDetails.route)
+                    navController.navigate(DentistScreens.AppointmentDetailsScreen.route) {
+                        popUpTo(DentistScreens.Home.route)
+                    }
                 } else
                     showDialog = true
             }

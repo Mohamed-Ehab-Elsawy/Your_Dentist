@@ -42,19 +42,19 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.nca.yourdentist.PatientActivity
 import com.nca.yourdentist.R
-import com.nca.yourdentist.navigation.MainScreens
-import com.nca.yourdentist.presentation.component.ui.ProgressDialog
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
+import com.nca.yourdentist.navigation.AuthScreens
 import com.nca.yourdentist.presentation.component.ui.customized.CustomButton
 import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
 import com.nca.yourdentist.presentation.component.ui.customized.PasswordTextField
+import com.nca.yourdentist.presentation.component.ui.customized.ProgressDialog
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onErrorLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.secondaryLight
-import com.nca.yourdentist.presentation.screens.patient.PatientMainActivity
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
 import kotlinx.coroutines.launch
@@ -74,7 +74,6 @@ fun PatientLoginScreen(
 
     val autoFillManager = LocalAutofillManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val serverClientId = stringResource(id = R.string.default_web_client_id)
 
     Scaffold(
         topBar = {
@@ -150,7 +149,7 @@ fun PatientLoginScreen(
                     fontSize = 16.sp,
                     modifier = Modifier
                         .clickable {
-                            navController.navigate(MainScreens.ForgetPassword.route)
+                            navController.navigate(AuthScreens.ForgetPassword.route)
                         }
                         .align(Alignment.Start)
                 )
@@ -174,7 +173,7 @@ fun PatientLoginScreen(
                     color = secondaryLight,
                     fontSize = 16.sp,
                     modifier = Modifier
-                        .clickable { navController.navigate(MainScreens.PatientSignup.route) }
+                        .clickable { navController.navigate(AuthScreens.PatientSignup.route) }
                         .align(Alignment.Start)
                 )
 
@@ -187,7 +186,7 @@ fun PatientLoginScreen(
                     OutlinedButton(
                         onClick = {
                             coroutineScope.launch {
-                                viewModel.signInWithGoogle(context, serverClientId)
+                                viewModel.signInWithGoogle(context)
                             }
                         },
                         shape = RoundedCornerShape(8.dp),
@@ -215,9 +214,9 @@ fun PatientLoginScreen(
         is UiState.Loading -> ProgressDialog()
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                if (AppProviders.patient != null)
+                if (Provider.patient != null)
                     activity?.apply {
-                        startActivity(Intent(context, PatientMainActivity::class.java))
+                        startActivity(Intent(context, PatientActivity::class.java))
                         finish()
                     }
             }

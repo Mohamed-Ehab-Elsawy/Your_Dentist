@@ -83,28 +83,21 @@ dependencies {
     implementation(libs.androidx.camera.lifecycle)
     // Image Loading
     implementation(libs.coil.compose)
-    //Ktor
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.cio)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.logging)
-    //implementation("ch.qos.logback:logback-classic:3.1.1")
     // QR CODE Generator & Scanner
     implementation(libs.zxing.core)
     implementation(libs.barcode.scanning)
 
-    implementation(libs.accompanist.swiperefresh)
-
-
     implementation(libs.androidx.ui.text.google.fonts)
-
     implementation(libs.compose.shimmer)
     implementation(libs.accompanist.pager)
-
     implementation(libs.material)
     implementation(libs.androidx.work.runtime.ktx)
 
+    implementation("io.ktor:ktor-client-core:2.3.5")
+    implementation("io.ktor:ktor-client-okhttp:2.3.5")
+    implementation("io.ktor:ktor-client-content-negotiation:2.3.5")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.5")
+    implementation("io.ktor:ktor-client-logging:2.3.5")
 
     // Testing dependencies
     testImplementation(libs.junit)

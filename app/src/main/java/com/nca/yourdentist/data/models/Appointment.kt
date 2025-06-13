@@ -4,13 +4,12 @@ import android.os.Parcelable
 import com.google.firebase.Timestamp
 import com.nca.yourdentist.domain.models.AppointmentStatus
 import kotlinx.parcelize.Parcelize
-import java.util.UUID
 
 @Parcelize
 data class Appointment(
     val id: String? = null,
-    val dentistId: String? = null,
-    val dentistName: String? = null,
+    var dentistId: String? = null,
+    var dentistName: String? = null,
     var patientId: String? = null,
     var patientName: String? = null,
     val timestamp: Timestamp? = null,
@@ -20,16 +19,21 @@ data class Appointment(
 
 @Parcelize
 data class Report(
-    val id: String = UUID.randomUUID().toString(),
-    val date: Timestamp = Timestamp.now(),
-    val originalImageUrl: String? = null,
-    val detectedCariesImageUrl: String? = null,
-    val questionnaireResult: List<Question>? = null,
-    val notes: String? = null,
+    val id: String? = null,
+    var creationTime: Timestamp = Timestamp.now(),
+    var dentistId: String? = null,
+    var dentistName: String? = null,
+    var uploadedImageUrl: String? = null,
+    var detectedCariesImageUrl: String? = null,
+    var questionnaire: List<Questionnaire>? = null,
+    var notes: String? = null,
+    var notified: Boolean = false,
+    var read: Boolean = false,
+    var dentistRated: Boolean = false
 ) : Parcelable
 
 @Parcelize
-data class Question(
-    val title: String,
+data class Questionnaire(
+    val title: String = "",
     var answer: String = ""
 ) : Parcelable

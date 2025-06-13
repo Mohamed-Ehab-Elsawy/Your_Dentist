@@ -18,7 +18,7 @@ import androidx.compose.ui.text.fromHtml
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.nca.yourdentist.R
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 

@@ -30,21 +30,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.nca.yourdentist.PatientActivity
 import com.nca.yourdentist.R
-import com.nca.yourdentist.presentation.component.ui.ProgressDialog
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.customized.CustomButton
 import com.nca.yourdentist.presentation.component.ui.customized.CustomStringDropDownMenu
 import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
 import com.nca.yourdentist.presentation.component.ui.customized.PasswordTextField
+import com.nca.yourdentist.presentation.component.ui.customized.ProgressDialog
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onErrorLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.screens.common.auth.patient_signup.component.BirthdatePicker
 import com.nca.yourdentist.presentation.screens.common.auth.patient_signup.component.NameTextField
 import com.nca.yourdentist.presentation.screens.common.auth.patient_signup.component.PhoneTextField
-import com.nca.yourdentist.presentation.screens.patient.PatientMainActivity
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.presentation.utils.UiState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -188,9 +188,9 @@ fun PatientSignupScreen(
         is UiState.Loading -> ProgressDialog()
         is UiState.Success -> {
             LaunchedEffect(Unit) {
-                if (AppProviders.patient != null) {
+                if (Provider.patient != null) {
                     activity?.startActivity(
-                        Intent(context, PatientMainActivity::class.java)
+                        Intent(context, PatientActivity::class.java)
                     )
                     activity?.finish()
                 }

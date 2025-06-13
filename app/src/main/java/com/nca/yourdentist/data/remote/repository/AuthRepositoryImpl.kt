@@ -10,9 +10,9 @@ import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.models.requests.AuthRequest
 import com.nca.yourdentist.data.models.users.Dentist
 import com.nca.yourdentist.data.models.users.Patient
-import com.nca.yourdentist.data.remote.FirebaseConstants
+import com.nca.yourdentist.data.remote.utils.FirebaseConstants
 import com.nca.yourdentist.domain.remote.repository.AuthRepository
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import kotlinx.coroutines.tasks.await
 
 class AuthRepositoryImpl(
@@ -65,7 +65,7 @@ class AuthRepositoryImpl(
                 patientCollection.document(result.user!!.uid).set(patient).await()
                 currentPatient = patient
             }
-            AppProviders.patient = currentPatient
+            Provider.patient = currentPatient
 
             return Result.success(result.user)
         } catch (t: Throwable) {
@@ -85,7 +85,7 @@ class AuthRepositoryImpl(
             val patient = snapshot.toObject(Patient::class.java)
             if (patient != null) {
                 preferencesHelper.putPatient(patient)
-                AppProviders.patient = patient
+                Provider.patient = patient
                 Log.d("AuthRepositoryImpl", "Patient Logged in successfully")
             }
             return Result.success(result.user)
@@ -107,20 +107,10 @@ class AuthRepositoryImpl(
             val dentist = snapshot.toObject(Dentist::class.java)
             if (dentist != null) {
                 preferencesHelper.putDentist(dentist)
-                AppProviders.dentist = dentist
+                Provider.dentist = dentist
                 Log.d("AuthRepositoryImpl", "Dentist Logged in successfully")
             }
             return Result.success(result.user)
-        } catch (t: Throwable) {
-            return Result.failure(t)
-        }
-    }
-
-    override suspend fun updateUserData(patient: Patient): Result<Patient> {
-        try {
-            patientCollection.document(patient.id!!).set(patient).await()
-            AppProviders.patient = patient
-            return Result.success(patient)
         } catch (t: Throwable) {
             return Result.failure(t)
         }
@@ -131,6 +121,16 @@ class AuthRepositoryImpl(
             firebaseAuth.sendPasswordResetEmail(email).await()
         } catch (t: Throwable) {
             Log.e("FirebaseServicesImpl", "forgetPassword: ${t.localizedMessage}")
+        }
+    }
+
+    override suspend fun updateUserData(patient: Patient): Result<Patient> {
+        try {
+            patientCollection.document(patient.id!!).set(patient).await()
+            Provider.patient = patient
+            return Result.success(patient)
+        } catch (t: Throwable) {
+            return Result.failure(t)
         }
     }
 

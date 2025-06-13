@@ -1,10 +1,14 @@
 package com.nca.yourdentist.data.remote.repository
 
+import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nca.yourdentist.data.models.AppNotification
-import com.nca.yourdentist.data.remote.FirebaseConstants
+import com.nca.yourdentist.data.remote.utils.FirebaseConstants
 import com.nca.yourdentist.domain.remote.repository.NotificationsRepository
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 
 class NotificationsRepositoryImpl(
@@ -12,34 +16,46 @@ class NotificationsRepositoryImpl(
 ) : NotificationsRepository {
 
     private val notificationCollection =
-        if (AppProviders.patient?.id != null)
+        if (Provider.patient?.id != null)
             firestore.collection(FirebaseConstants.PATIENT_COLLECTIONS)
-                .document(AppProviders.patient?.id!!)
+                .document(Provider.patient?.id!!)
                 .collection(FirebaseConstants.NOTIFICATIONS)
         else
             firestore.collection(FirebaseConstants.DENTIST_COLLECTIONS)
-                .document(AppProviders.dentist?.id!!)
+                .document(Provider.dentist?.id!!)
                 .collection(FirebaseConstants.NOTIFICATIONS)
 
-    override suspend fun addNotification(appNotification: AppNotification) {
-        notificationCollection.document(appNotification.id).set(appNotification).await()
-    }
 
     override suspend fun updateNotification(appNotification: AppNotification) {
-        notificationCollection.document(appNotification.id).set(appNotification).await()
+        notificationCollection.document(appNotification.id).update(
+            mapOf(
+                "read" to appNotification.read,
+                "notified" to appNotification.notified
+            )
+        ).await()
     }
 
-    override suspend fun fetchNotifications(): List<AppNotification> {
-        val appNotifications = mutableListOf<AppNotification>()
-        val querySnapshot = notificationCollection.get().await()
-        for (document in querySnapshot.documents) {
-            val appNotification = document.toObject(AppNotification::class.java)
-            if (appNotification != null) {
-                appNotifications.add(appNotification)
+    override fun observeNotifications(): Flow<List<AppNotification>> = callbackFlow {
+        Log.e("NotificationsRepository", "Start listening to notifications...")
+        val listener = notificationCollection.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error)
+                return@addSnapshotListener
+            }
+            if (snapshot != null && !snapshot.isEmpty) {
+                val notifications = snapshot.documents.mapNotNull { doc ->
+                    doc.toObject(AppNotification::class.java)
+                }.sortedByDescending { it.createdAt }
+
+                trySend(notifications).isSuccess
             }
         }
-        return appNotifications
+        awaitClose {
+            Log.e("NotificationsRepository", "Stopped listening to notifications.")
+            listener.remove()
+        }
     }
+
 
     override suspend fun deleteNotification(notificationId: String) {
         notificationCollection.document(notificationId).delete().await()

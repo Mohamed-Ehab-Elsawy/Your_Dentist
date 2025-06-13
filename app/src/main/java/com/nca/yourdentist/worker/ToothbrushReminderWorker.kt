@@ -11,8 +11,8 @@ class ToothbrushReminderWorker(
 ) : Worker(context, params) {
 
     override fun doWork(): Result {
-        val helper = NotificationHelper(applicationContext)
-        helper.showNotification("Time to brush!", "Keep your teeth clean 🪥")
+        val notificationHelper = NotificationHelper(applicationContext)
+        notificationHelper.showReminder()
         return Result.success()
     }
 }

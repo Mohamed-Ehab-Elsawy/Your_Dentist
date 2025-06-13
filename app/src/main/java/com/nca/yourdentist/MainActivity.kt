@@ -12,17 +12,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
 import androidx.navigation.compose.rememberNavController
 import com.nca.yourdentist.data.local.PreferencesHelper
 import com.nca.yourdentist.data.network.NetworkMonitor
-import com.nca.yourdentist.navigation.AppNavGraph
-import com.nca.yourdentist.navigation.MainScreens
-import com.nca.yourdentist.presentation.component.ui.NoInternetDialog
-import com.nca.yourdentist.presentation.component.ui.theme.MyAppTheme
+import com.nca.yourdentist.navigation.AuthNavGraph
+import com.nca.yourdentist.navigation.AuthScreens
+import com.nca.yourdentist.presentation.component.ui.customized.NoInternetDialog
+import com.nca.yourdentist.presentation.component.ui.theme.AppTheme
 import com.nca.yourdentist.utils.Constant
 import com.nca.yourdentist.utils.updateBaseContextLocale
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.android.ext.android.inject
+import org.koin.androidx.compose.KoinAndroidContext
 import java.util.Locale
 
 class MainActivity : ComponentActivity() {
@@ -32,24 +34,28 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         loggedOut = intent.getBooleanExtra(Constant.AUTH_SCREEN, false)
         setContent {
-            val navController = rememberNavController()
-            var isConnected by remember { mutableStateOf(true) }
+            KoinAndroidContext {
+                val navController = rememberNavController()
+                var isConnected by remember { mutableStateOf(true) }
 
-            LaunchedEffect(Unit) {
-                networkMonitor.isConnected.collectLatest { isConnected = it }
-            }
+                LaunchedEffect(Unit) {
+                    networkMonitor.isConnected.collectLatest { isConnected = it }
+                }
 
-            MyAppTheme {
-                Surface(modifier = Modifier.fillMaxSize()) {
-                    AppNavGraph(navController = navController)
+                AppTheme {
+                    Surface(modifier = Modifier.fillMaxSize()) {
+                        AuthNavGraph(navController = navController)
 
-                    if (loggedOut)
-                        navController.navigate(MainScreens.SelectUserType.route)
+                        if (loggedOut)
+                            navController.navigate(AuthScreens.SelectUserType.route)
 
-                    if (!isConnected)
-                        NoInternetDialog()
+                        if (!isConnected)
+                            NoInternetDialog()
+                    }
                 }
             }
         }

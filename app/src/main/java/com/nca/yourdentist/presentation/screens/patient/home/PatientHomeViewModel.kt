@@ -12,9 +12,7 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 import com.nca.yourdentist.data.models.users.Patient
 import com.nca.yourdentist.domain.local.usecase.FetchLocalPatientDataUseCase
-import com.nca.yourdentist.domain.local.usecase.FetchQRCodeBitmapUseCase
 import com.nca.yourdentist.domain.local.usecase.FetchReminderStateUseCase
-import com.nca.yourdentist.domain.local.usecase.PutQRCodeBitmapUseCase
 import com.nca.yourdentist.domain.local.usecase.PutReminderStateUseCase
 import com.nca.yourdentist.domain.local.usecase.ScheduleToothbrushReminderUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.UploadQRCodeUseCase
@@ -26,8 +24,6 @@ import java.io.ByteArrayOutputStream
 
 class PatientHomeViewModel(
     private val fetchPatientData: FetchLocalPatientDataUseCase,
-    private val fetchQRCodeBitmap: FetchQRCodeBitmapUseCase,
-    private val putQRCodeBitmap: PutQRCodeBitmapUseCase,
     private val uploadQRCodeUseCase: UploadQRCodeUseCase,
     private val putReminderStateUseCase: PutReminderStateUseCase,
     private val fetchReminderStateUseCase: FetchReminderStateUseCase,
@@ -35,22 +31,6 @@ class PatientHomeViewModel(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<UiState<Bitmap>>(UiState.Idle)
     val uiState: StateFlow<UiState<Bitmap>> = _uiState
-
-    private fun fetchPatientData(): Patient = fetchPatientData.invoke()
-
-    fun fetchQRCodeBitmap() {
-        val patient = fetchPatientData()
-        _uiState.value = UiState.Loading
-        if (patient.qrCode != null) {
-            val bitmap = fetchQRCodeBitmap.invoke()
-            if (bitmap != null) {
-                _uiState.value = UiState.Success(bitmap)
-            } else {
-                _uiState.value = UiState.Error(Throwable(message = "Failed to fetch QR Code"))
-            }
-        } else
-            generateQRCodeBitmap()
-    }
 
     private fun uploadQRCode(id: String, bitmap: Bitmap) {
         viewModelScope.launch {
@@ -80,7 +60,6 @@ class PatientHomeViewModel(
                     }
                 }
                 uploadQRCode(id, bitmap)
-                putQRCode(bitmap)
                 _uiState.value = UiState.Success(bitmap)
             } catch (t: Throwable) {
                 _uiState.value =
@@ -90,17 +69,17 @@ class PatientHomeViewModel(
         }
     }
 
-    fun putQRCode(bitmap: Bitmap) = putQRCodeBitmap.invoke(bitmap)
-
     private fun fetchReminderState(): Boolean = fetchReminderStateUseCase.invoke()
+
+    private fun putReminderState() = putReminderStateUseCase.invoke(true)
 
     fun scheduleToothbrushReminder() {
         if (!fetchReminderState()) {
-            scheduleToothbrushReminderUseCase.execute()
+            scheduleToothbrushReminderUseCase.invoke()
             putReminderState()
             Log.e("PatientHomeViewModel", "scheduleToothbrushReminder: Reminder Scheduled")
         }
     }
 
-    private fun putReminderState() = putReminderStateUseCase.invoke(true)
+    fun fetchPatient(): Patient = fetchPatientData()
 }

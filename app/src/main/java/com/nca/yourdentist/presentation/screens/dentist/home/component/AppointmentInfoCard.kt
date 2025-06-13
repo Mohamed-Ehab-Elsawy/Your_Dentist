@@ -1,6 +1,7 @@
 package com.nca.yourdentist.presentation.screens.dentist.home.component
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,16 +23,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nca.yourdentist.R
 import com.nca.yourdentist.data.models.Appointment
+import com.nca.yourdentist.domain.models.AppointmentStatus.BOOKED
 import com.nca.yourdentist.presentation.component.ui.theme.AppTypography
+import com.nca.yourdentist.presentation.component.ui.theme.greenLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.secondaryLight
-import com.nca.yourdentist.presentation.component.ui.theme.surfaceLight
+import com.nca.yourdentist.presentation.component.ui.theme.surfaceContainerLight
+import com.nca.yourdentist.presentation.component.ui.theme.white
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -41,26 +46,38 @@ fun AppointmentInfoCard(
     modifier: Modifier = Modifier, appointment: Appointment,
     onAppointmentClick: (Appointment) -> Unit
 ) {
+    val context = LocalContext.current
     val formatter = DateTimeFormatter.ofPattern("hh:mm a")
         .withZone(ZoneId.systemDefault())
 
     val instant = appointment.timestamp?.toDate()?.toInstant()
     val time = formatter.format(instant)
-
     Card(
         modifier = modifier
-            .padding(vertical = 8.dp, horizontal = 20.dp)
+            .padding(vertical = 8.dp)
             .fillMaxWidth()
             .wrapContentHeight(),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = surfaceLight
+            containerColor =
+                if (appointment.status.lowercase() == BOOKED.name.lowercase()) surfaceContainerLight
+                else greenLight
         )
     ) {
         Box(
             modifier = modifier
                 .fillMaxWidth()
-                .clickable { onAppointmentClick.invoke(appointment) }
+                .clickable {
+                    if (appointment.status.lowercase() == BOOKED.name.lowercase())
+                        onAppointmentClick.invoke(appointment)
+                    else
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.appointment_completed_already),
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                }
         ) {
             Row(
                 modifier = modifier
@@ -75,7 +92,8 @@ fun AppointmentInfoCard(
                         .padding(8.dp)
                         .size(54.dp),
                     contentDescription = null,
-                    tint = primaryLight
+                    tint = if (appointment.status.lowercase() == BOOKED.name.lowercase()) primaryLight
+                    else white
                 )
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -87,28 +105,32 @@ fun AppointmentInfoCard(
                         style = AppTypography.titleMedium,
                         modifier = modifier.fillMaxWidth(),
                         fontWeight = FontWeight.Bold,
-                        color = primaryLight
+                        color = if (appointment.status.lowercase() == BOOKED.name.lowercase()) primaryLight
+                        else white
                     )
                     Text(
                         text = appointment.patientName!!,
                         style = AppTypography.bodyLarge,
-                        color = secondaryLight
+                        color = if (appointment.status.lowercase() == BOOKED.name.lowercase()) secondaryLight
+                        else white
                     )
                     Text(
                         text = time,
                         style = AppTypography.bodyLarge,
-                        color = secondaryLight
+                        color = if (appointment.status.lowercase() == BOOKED.name.lowercase()) secondaryLight
+                        else white
                     )
                 }
             }
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = stringResource(R.string.expand_notification_arrow),
-                modifier = Modifier
-                    .padding(8.dp)
-                    .align(Alignment.BottomEnd),
-                tint = primaryLight
-            )
+            if (appointment.status.lowercase() == BOOKED.name.lowercase())
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                    contentDescription = stringResource(R.string.expand_notification_arrow),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .align(Alignment.BottomEnd),
+                    tint = primaryLight
+                )
         }
     }
 }

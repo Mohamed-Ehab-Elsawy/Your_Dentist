@@ -16,6 +16,7 @@ import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithEmailUseCase
 import com.nca.yourdentist.domain.remote.usecase.auth.SignInWithGoogleUseCase
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
+import com.nca.yourdentist.utils.GoogleAuthConfig
 import com.nca.yourdentist.utils.LanguageConstants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -60,14 +61,14 @@ class PatientLoginViewModel(
         }
     }
 
-    fun signInWithGoogle(context: Context, serverClientId: String) {
+    fun signInWithGoogle(context: Context) {
         _uiState.value = UiState.Loading
         viewModelScope.launch {
             try {
                 val credentialManager = CredentialManager.create(context)
                 val googleIdOption =
                     GetGoogleIdOption.Builder().setFilterByAuthorizedAccounts(false)
-                        .setServerClientId(serverClientId).build()
+                        .setServerClientId(GoogleAuthConfig.WEB_CLIENT_ID).build()
                 val request =
                     GetCredentialRequest.Builder().addCredentialOption(googleIdOption).build()
 

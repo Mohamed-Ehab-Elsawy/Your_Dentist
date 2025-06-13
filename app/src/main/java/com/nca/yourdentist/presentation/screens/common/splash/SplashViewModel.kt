@@ -3,8 +3,8 @@ package com.nca.yourdentist.presentation.screens.common.splash
 import androidx.lifecycle.ViewModel
 import com.nca.yourdentist.domain.local.usecase.FetchLocalDentistDataUseCase
 import com.nca.yourdentist.domain.local.usecase.FetchLocalPatientDataUseCase
-import com.nca.yourdentist.presentation.utils.AppProviders.dentist
-import com.nca.yourdentist.presentation.utils.AppProviders.patient
+import com.nca.yourdentist.presentation.utils.Provider.dentist
+import com.nca.yourdentist.presentation.utils.Provider.patient
 
 class SplashViewModel(
     private val fetchPatient: FetchLocalPatientDataUseCase,

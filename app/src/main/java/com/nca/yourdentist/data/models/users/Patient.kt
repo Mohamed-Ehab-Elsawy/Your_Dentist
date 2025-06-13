@@ -2,9 +2,8 @@ package com.nca.yourdentist.data.models.users
 
 import android.os.Parcelable
 import com.google.firebase.Timestamp
-import com.nca.yourdentist.data.models.AppNotification
-import com.nca.yourdentist.data.models.Report
-import com.nca.yourdentist.data.remote.FirebaseConstants
+import com.nca.yourdentist.data.models.Appointment
+import com.nca.yourdentist.data.remote.utils.FirebaseConstants
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -17,7 +16,6 @@ data class Patient(
     val phoneNumber: String? = null,
     val birthDate: String? = null,
     val qrCode: String? = null,
-    val appNotifications: List<AppNotification> = listOf<AppNotification>(),
-    val records: List<Report> = listOf<Report>(),
+    var upcomingAppointment: Appointment? = null,
     val type: String = FirebaseConstants.PATIENT
 ) : Parcelable

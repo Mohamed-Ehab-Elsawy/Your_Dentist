@@ -8,28 +8,71 @@ import androidx.core.app.NotificationCompat
 import com.nca.yourdentist.R
 
 class NotificationHelper(private val context: Context) {
+    private val reportsChannelId = "report_channel"
+    private val reportsChannelName = "Reports"
+    private val toothbrushChannelId = "toothbrush_channel"
+    private val toothbrushChannelName = "Tooth brushes reminder"
+    private val generalChannelId = "general_channel"
+    private val generalChannelName = "General"
 
-    fun showNotification(title: String, message: String) {
-        val notificationManager =
-            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val channelId = "toothbrush_channel"
+    init {
+        createNotificationChannels()
+    }
 
+    private fun createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                channelId,
-                "Toothbrush Reminders",
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            val generalChannel = NotificationChannel(
+                generalChannelId,
+                generalChannelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val reportChannel = NotificationChannel(
+                reportsChannelId,
+                reportsChannelName,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val toothbrushChannel = NotificationChannel(
+                toothbrushChannelId,
+                toothbrushChannelName,
                 NotificationManager.IMPORTANCE_HIGH
             )
-            notificationManager.createNotificationChannel(channel)
+            notificationManager?.createNotificationChannel(generalChannel)
+            notificationManager?.createNotificationChannel(reportChannel)
+            notificationManager?.createNotificationChannel(toothbrushChannel)
         }
+    }
 
-        val notification = NotificationCompat.Builder(context, channelId)
+    fun showReminder() {
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        val notification = NotificationCompat.Builder(context, toothbrushChannelId)
+            .setSmallIcon(R.drawable.ic_logo)
+            .setContentTitle("Time to brush!")
+            .setContentText("Keep your teeth clean 🪥")
+            .setAutoCancel(true)
+            .build()
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
+
+    fun sendGeneralNotification(title: String, message: String) {
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        val notification = NotificationCompat.Builder(context, generalChannelId)
             .setSmallIcon(R.drawable.ic_logo)
             .setContentTitle(title)
             .setContentText(message)
             .setAutoCancel(true)
             .build()
+        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+    }
 
+    fun sendReportNotification(title: String, message: String) {
+        val notificationManager = context.getSystemService(NotificationManager::class.java)
+        val notification = NotificationCompat.Builder(context, reportsChannelId)
+            .setSmallIcon(R.drawable.ic_logo)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .build()
         notificationManager.notify(System.currentTimeMillis().toInt(), notification)
     }
 }

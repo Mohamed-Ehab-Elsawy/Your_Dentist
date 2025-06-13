@@ -2,11 +2,7 @@ package com.nca.yourdentist.domain.remote.usecase.notification
 
 import com.nca.yourdentist.data.models.AppNotification
 import com.nca.yourdentist.domain.remote.repository.NotificationsRepository
-
-class AddNotificationUseCase(private val notificationRepository: NotificationsRepository) {
-    suspend operator fun invoke(appNotification: AppNotification) =
-        notificationRepository.addNotification(appNotification)
-}
+import kotlinx.coroutines.flow.Flow
 
 class UpdateNotificationUseCase(private val notificationRepository: NotificationsRepository) {
     suspend operator fun invoke(appNotification: AppNotification) =
@@ -18,6 +14,7 @@ class DeleteNotificationUseCase(private val notificationRepository: Notification
         notificationRepository.deleteNotification(appNotification.id)
 }
 
-class FetchNotificationsUseCase(private val notificationRepository: NotificationsRepository) {
-    suspend operator fun invoke() = notificationRepository.fetchNotifications()
+class ObserveNotificationsUseCase(private val notificationRepository: NotificationsRepository) {
+    suspend operator fun invoke(): Flow<List<AppNotification>> =
+        notificationRepository.observeNotifications()
 }

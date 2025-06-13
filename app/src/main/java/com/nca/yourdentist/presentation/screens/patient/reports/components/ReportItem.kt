@@ -46,7 +46,7 @@ fun ReportItem(
     var formattedDate by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
-        formattedDate = report.date.toFormattedString()
+        formattedDate = report.creationTime.toFormattedString()
     }
 
     Card(

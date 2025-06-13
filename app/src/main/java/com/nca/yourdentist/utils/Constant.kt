@@ -9,6 +9,9 @@ object Constant {
     const val DENTIST = "dentist"
     const val PATIENT = "patient"
     const val APPOINTMENT = "appointment"
+    const val UPLOADED_FILE = "uploaded file"
+    const val QUESTIONNAIRE = "questionnaire"
+    const val REPORT = "report"
 
     // Responses constants
     const val USER_TYPE_ERROR = "User type error"

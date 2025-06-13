@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +46,7 @@ import com.nca.yourdentist.presentation.component.ui.theme.white
 @OptIn(ExperimentalGetImage::class)
 @Composable
 fun QRScannerView(onQrCodeScanned: (String) -> Unit) {
-    val context = LocalContext.current
+
     val lifecycleOwner = LocalLifecycleOwner.current
 
     // For animation

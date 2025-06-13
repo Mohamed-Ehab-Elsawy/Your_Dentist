@@ -39,19 +39,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import com.nca.yourdentist.DentistActivity
 import com.nca.yourdentist.R
 import com.nca.yourdentist.data.local.PreferencesHelper
-import com.nca.yourdentist.presentation.component.ui.ProgressDialog
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.customized.EmailTextField
 import com.nca.yourdentist.presentation.component.ui.customized.PasswordTextField
+import com.nca.yourdentist.presentation.component.ui.customized.ProgressDialog
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.component.ui.theme.errorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onErrorLight
 import com.nca.yourdentist.presentation.component.ui.theme.onPrimaryLight
 import com.nca.yourdentist.presentation.component.ui.theme.primaryLight
-import com.nca.yourdentist.presentation.screens.dentist.DentistMainActivity
-import com.nca.yourdentist.presentation.utils.AppProviders
+import com.nca.yourdentist.presentation.utils.Provider
 import com.nca.yourdentist.presentation.utils.UiState
 import com.nca.yourdentist.utils.Constant
 import kotlinx.coroutines.launch
@@ -60,7 +59,6 @@ import org.koin.compose.getKoin
 
 @Composable
 fun DentistLoginScreen(
-    navController: NavController,
     viewModel: DentistLoginViewModel = koinViewModel(),
     preferencesHelper: PreferencesHelper = getKoin().get()
 ) {
@@ -175,9 +173,9 @@ fun DentistLoginScreen(
             is UiState.Loading -> ProgressDialog()
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
-                    if (AppProviders.dentist != null) {
-                        preferencesHelper.putDentist(AppProviders.dentist!!)
-                        activity?.startActivity(Intent(context, DentistMainActivity::class.java))
+                    if (Provider.dentist != null) {
+                        preferencesHelper.putDentist(Provider.dentist!!)
+                        activity?.startActivity(Intent(context, DentistActivity::class.java))
                         activity?.finish()
                     }
                 }

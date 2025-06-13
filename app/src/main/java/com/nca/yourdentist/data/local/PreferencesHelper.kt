@@ -1,15 +1,11 @@
 package com.nca.yourdentist.data.local
 
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.util.Log
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.nca.yourdentist.data.models.users.Dentist
 import com.nca.yourdentist.data.models.users.Patient
-import java.io.ByteArrayOutputStream
 
 class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
 
@@ -57,29 +53,6 @@ class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
         } else Patient()
     }
 
-    fun putQRCodeBitmap(bitmap: Bitmap) {
-        val id = QR_CODE + fetchPatient().id!!
-        val outputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
-        val byteArray = outputStream.toByteArray()
-        val encodedBitmap = Base64.encodeToString(byteArray, Base64.DEFAULT)
-
-        putString(id, encodedBitmap)
-        Log.e(TAG, "Bitmap saved: $id")
-    }
-
-    fun fetchQRCodeBitmap(): Bitmap? {
-        val qrCodeKey = QR_CODE + fetchPatient().id!!
-        val encodedBitmap = fetchString(qrCodeKey)
-
-        return if (encodedBitmap.isNotEmpty()) {
-            val byteArray = Base64.decode(encodedBitmap, Base64.DEFAULT)
-            val decodedBitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.size)
-            Log.e(TAG, "Bitmap fetched: $qrCodeKey")
-            decodedBitmap
-        } else null
-    }
-
     fun putDentist(dentist: Dentist) {
         val dentistDataJson = gson.toJson(dentist)
         putString(DENTIST, dentistDataJson)
@@ -97,8 +70,6 @@ class PreferencesHelper(private val sharedPreferences: SharedPreferences) {
 
     fun clearData() {
         sharedPreferences.edit {
-            val qrCodeKey = QR_CODE + fetchPatient().id
-            clearString(qrCodeKey)
             clearString(PATIENT)
             clearString(DENTIST)
             Log.e(TAG, "Data cleared")

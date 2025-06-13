@@ -20,33 +20,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavController
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.nca.yourdentist.R
 import com.nca.yourdentist.data.models.AppNotification
-import com.nca.yourdentist.presentation.component.ui.NoContentSection
-import com.nca.yourdentist.presentation.component.ui.TopApplicationBar
-import com.nca.yourdentist.presentation.screens.patient.notification.component.NotificationItem
+import com.nca.yourdentist.presentation.component.ui.customized.NoContentSection
+import com.nca.yourdentist.presentation.component.ui.customized.NotificationItem
+import com.nca.yourdentist.presentation.component.ui.customized.TopApplicationBar
 import com.nca.yourdentist.presentation.utils.UiState
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PatientNotificationScreen(
-    navController: NavController,
-    viewModel: PatientNotificationViewModel = koinViewModel()
+    vm: PatientNotificationViewModel
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by vm.uiState.collectAsState()
 
     val snackBarHostState = remember { SnackbarHostState() }
     var appNotifications by remember { mutableStateOf<List<AppNotification>>(emptyList()) }
 
-    var isRefreshing by remember { mutableStateOf(true) }
-    val swipeRefreshState = rememberSwipeRefreshState(isRefreshing)
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchNotifications()
-    }
 
     Scaffold(
         topBar = { TopApplicationBar(title = stringResource(R.string.notification)) }
@@ -63,45 +53,39 @@ fun PatientNotificationScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.FillBounds
             )
-            SwipeRefresh(
-                state = swipeRefreshState,
-                onRefresh = {
-                    isRefreshing = true
-                    viewModel.fetchNotifications()
-                }, modifier = Modifier.fillMaxSize(),
-                swipeEnabled = true
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
             ) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    if (appNotifications.isNotEmpty())
-                        items(appNotifications.size) { index ->
-                            NotificationItem(appNotification = appNotifications[index])
-                        }
-                    else
-                        item {
-                            Box(
-                                modifier = Modifier.fillParentMaxSize(),
-                                contentAlignment = Alignment.Center
+                if (appNotifications.isNotEmpty())
+                    items(appNotifications.size) { index ->
+                        NotificationItem(
+                            appNotification = appNotifications[index],
+                            onNotificationClick = { vm.updateNotificationState(it.copy(read = true)) })
+                    }
+                else
+                    item {
+                        Box(
+                            modifier = Modifier.fillParentMaxSize(),
+                            contentAlignment = Alignment.Center
+                        )
+                        {
+                            NoContentSection(
+                                modifier = Modifier.wrapContentSize(),
+                                painter = R.drawable.img_no_notifications,
+                                title = stringResource(R.string.no_notifications_yet)
                             )
-                            {
-                                NoContentSection(
-                                    modifier = Modifier.wrapContentSize(),
-                                    painter = R.drawable.img_no_notifications,
-                                    title = stringResource(R.string.no_notifications_yet)
-                                )
-                            }
                         }
-                }
+                    }
             }
         }
     }
+
 
     when (uiState) {
 
         is UiState.Success -> {
             LaunchedEffect(uiState) {
-                isRefreshing = false
                 val newList = (uiState as UiState.Success<List<AppNotification>>).data
                 if (newList.isNotEmpty()) appNotifications = newList
             }

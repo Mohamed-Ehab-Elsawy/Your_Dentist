@@ -21,11 +21,11 @@ fun NameTextField(
     errorText: String
 ) {
     OutlinedTextField(
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = { onValueChange.invoke(it) },
         maxLines = 1,
         label = { Text(stringResource(id = R.string.full_name)) },
-        modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text, imeAction = ImeAction.Done
         ),
